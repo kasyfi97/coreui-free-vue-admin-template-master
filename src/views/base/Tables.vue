@@ -4,7 +4,7 @@
     <b-row>
       <b-col lg="12">
 
-        <b-dropdown id="dropdown-form" text="Tambah Mitra" ref="dropdown" class="m-2">
+        <b-dropdown id="dropdown-form" text="Tambah / Edit Mitra" ref="dropdown" class="m-2">
       <b-dropdown-form>
         <b-form-group label="FullName" label-for="dropdown-form-name" @submit.stop.prevent>
           <b-form-input v-model="name"
@@ -95,6 +95,8 @@ import { shuffleArray } from '@/shared/utils'
 import cTable from './Table.vue'
 let Getmitra
 let token
+let cId
+let cDeleted
 // async function(){
 //     const Getmitra = await axios.get('http://gbi.sytes.net/mitra')//.then(Response => this.mitra = Response.data);
 //     //axios.get('http://gbi.sytes.net/mitra').then((Response) => console.log(Response));
@@ -142,6 +144,8 @@ export default {
       kodepos:null,
       provinsi:null,
       kota:null,
+      cId:null,
+      cDeleted:null,
       updateSubmit:false,
       items: someData,
       itemsArray: someData(),
@@ -163,22 +167,37 @@ export default {
       //   alert("Update data gagal")
       //   location.reload();
       // }else{
-      var updateData = axios.put('http://gbi.sytes.net:3000/mitra',{token,affiliateName:this.name,category:this.kategori,nation:this.negara ,type:this.jenis ,email: this.email,province: this.provinsi,city: this.kota,address:this.alamat,postalCode:this.kodepos})
+      var updateData = axios.put('http://gbi.sytes.net:3000/mitra',{
+        token,
+      affiliateName:this.name,
+      category:this.kategori,
+      nation:this.negara ,
+      type:this.jenis ,
+      email: this.email,
+      province: this.provinsi,
+      city: this.kota,
+      address:this.alamat,
+      postalCode:this.kodepos,
+      affiliateId:cId,
+      isDeleted:cDeleted
+      })
       this.updateSubmit = false
       location.reload();
       //}
     },
       onClickForm:function(onClickedForm){
-      //alert(JSON.stringify(onClickedForm))
-      var cName = JSON.stringify(onClickedForm['nama_mitra'])
-      var cKategori = JSON.stringify(onClickedForm['kategori_mitra_id'])
-      var cJenis = JSON.stringify(onClickedForm['jenis_mitra_id'])
-      var cEmail = JSON.stringify(onClickedForm['email'])
-      var cNegara = JSON.stringify(onClickedForm['negara_id'])
-      var cProvinsi = JSON.stringify(onClickedForm['provinsi'])
-      var cKota = JSON.stringify(onClickedForm['kota'])
-      var cAlamat = JSON.stringify(onClickedForm['alamat'])
-      var cKodepos = JSON.stringify(onClickedForm['kode_pos'])
+      alert(JSON.stringify(onClickedForm))
+      cId = JSON.stringify(onClickedForm['id_mitra']).replace(/"/g, '')
+      var cName = JSON.stringify(onClickedForm['nama_mitra']).replace(/"/g, '')
+      var cKategori = JSON.stringify(onClickedForm['kategori_mitra_id']).replace(/"/g, '')
+      var cJenis = JSON.stringify(onClickedForm['jenis_mitra_id']).replace(/"/g, '')
+      var cEmail = JSON.stringify(onClickedForm['email']).replace(/"/g, '')
+      var cNegara = JSON.stringify(onClickedForm['negara_id']).replace(/"/g, '')
+      var cProvinsi = JSON.stringify(onClickedForm['provinsi']).replace(/"/g, '')
+      var cKota = JSON.stringify(onClickedForm['kota']).replace(/"/g, '')
+      var cAlamat = JSON.stringify(onClickedForm['alamat']).replace(/"/g, '')
+      var cKodepos = JSON.stringify(onClickedForm['kode_pos']).replace(/"/g, '')
+      cDeleted = JSON.stringify(onClickedForm['is_deleted']).replace(/"/g, '')
 
       this.name = cName
       this.email = cEmail

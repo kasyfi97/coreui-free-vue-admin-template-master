@@ -41,11 +41,23 @@ const someData = () => (async function(){
     //axios.get('http://gbi.sytes.net/mitra').then((Response) => console.log(Response));
     // return Object.entries(Getmitra.data.values[1])
     var temp = []
-    Object.values(dokumen.data.values).forEach((entry) => {
-      temp.push(entry)
-    })
-    console.log(temp)
-    return temp
+    var temp2 = []
+    temp = [...dokumen.data.values];
+    temp2 = temp.map((mitra) => {
+      mitra.mitra_1 = mitra.mitras[0].nama_mitra
+      mitra.mitra_2 = mitra.mitras[1].nama_mitra
+      // mitra.mitras = undefined
+      return mitra
+    });
+    console.log(temp2)
+    // Object.values(dokumen.data.values).forEach((entry) => {
+    //   Object.values(entry).forEach((entry2) =>{
+    //     console.log(entry2)
+    //   })
+    //   temp.push(entry)
+    // })
+    // console.log(dokumen.data.values)
+    return temp2
     })
 
 
@@ -90,7 +102,7 @@ const someData = () => (async function(){
 //   {username: 'Einar Randall', registered: '2012/02/01', role: 'Admin', status: 'Inactive'},
 //   {username: 'Félix Troels', registered: '2012/03/21', role: 'Staff', status: 'Active'},
 //   {username: 'Aulus Agmundr', registered: '2012/01/01', role: 'Member', status: 'Pending'}
-// ])
+// ][])
 
 // coba pakai buffer, data yg didapat dari server tulis dulu aja ke buffer -> jadiin file json -> baca di tabel
 // itu ide paling barbar yg gw dapet
@@ -102,7 +114,6 @@ export default {
   data: () => {
     return {
       items: someData,
-      itemsArray: someData(),
     }
   }
 }

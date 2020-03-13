@@ -199,12 +199,12 @@ export default {
       }
     },
     onClickForm:function(onClickedForm){
-      //alert(JSON.stringify(onClickedForm))
-      var cEmail = JSON.stringify(onClickedForm['email'])
-      var cAddress = JSON.stringify(onClickedForm['alamat'])
-      var cNama = JSON.stringify(onClickedForm['nama_lengkap'])
-      var cTele = JSON.stringify(onClickedForm['nomor_telepon'])
-      var cId = JSON.stringify(onClickedForm['id'])
+      alert(JSON.stringify(onClickedForm))
+      var cEmail = JSON.stringify(onClickedForm['email']).replace(/"/g, '')
+      var cAddress = JSON.stringify(onClickedForm['alamat']).replace(/"/g, '')
+      var cNama = JSON.stringify(onClickedForm['nama_lengkap']).replace(/"/g, '')
+      var cTele = JSON.stringify(onClickedForm['nomor_telepon']).replace(/"/g, '')
+      var cId = JSON.stringify(onClickedForm['id']).replace(/"/g, '')
 
       this.name = cNama
       this.email = cEmail
