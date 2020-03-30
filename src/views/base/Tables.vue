@@ -3,86 +3,87 @@
   <div class="animated fadeIn" vf>
     <b-row>
       <b-col lg="12">
-
         <b-dropdown id="dropdown-form" text="Tambah / Edit Mitra" ref="dropdown" class="m-2">
-      <b-dropdown-form>
-        <b-form-group label="FullName" label-for="dropdown-form-name" @submit.stop.prevent>
-          <b-form-input v-model="name"
-            id="dropdown-form-name"
-            size="sm"
-            placeholder="FullName"
-          ></b-form-input>
-          </b-form-group>
+          <b-dropdown-form>
+            <b-form-group label="FullName" label-for="dropdown-form-name" @submit.stop.prevent>
+              <b-form-input v-model="name"
+                id="dropdown-form-name"
+                size="sm"
+                placeholder="FullName"
+              ></b-form-input>
+              </b-form-group>
 
-        <b-form-group label="Kategori" label-for="dropdown-form-kategori" >
-          <b-form-input v-model="kategori"
-            id="dropdown-form-kategori"
-            size="sm"
-            placeholder="Kategori"
-          ></b-form-input>
-        </b-form-group>
+              <b-form-group label="Kategori" label-for="dropdown-form-kategori" >
+                <b-form-input v-model="kategori"
+                  id="dropdown-form-kategori"
+                  size="sm"
+                  placeholder="Kategori"
+                ></b-form-input>
+              </b-form-group>
 
-        <b-form-group label="Jenis" label-for="dropdown-form-jenis" >
-          <b-form-input v-model="jenis"
-            id="dropdown-form-jenis"
-            size="sm"
-            placeholder="Jenis"
-          ></b-form-input>
-        </b-form-group>
+              <b-form-group label="Jenis" label-for="dropdown-form-jenis" >
+                <b-form-input v-model="jenis"
+                  id="dropdown-form-jenis"
+                  size="sm"
+                  placeholder="Jenis"
+                ></b-form-input>
+              </b-form-group>
 
-          <b-form-group label="Email" label-for="dropdown-form-email" >
-          <b-form-input v-model="email"
-            id="dropdown-form-email"
-            size="sm"
-            placeholder="email@example.com"
-          ></b-form-input>
-        </b-form-group>
+                <b-form-group label="Email" label-for="dropdown-form-email" >
+                <b-form-input v-model="email"
+                  id="dropdown-form-email"
+                  size="sm"
+                  placeholder="email@example.com"
+                ></b-form-input>
+              </b-form-group>
 
-        <b-form-group label="Negara" label-for="dropdown-form-negara" >
-          <b-form-input v-model="negara"
-            id="dropdown-form-negara"
-            size="sm"
-            placeholder="Id Negara"
-          ></b-form-input>
-        </b-form-group>
+              <b-form-group label="Negara" label-for="dropdown-form-negara" >
+                <b-form-input v-model="negara"
+                  id="dropdown-form-negara"
+                  size="sm"
+                  placeholder="Id Negara"
+                ></b-form-input>
+              </b-form-group>
 
-        <b-form-group label="Provinsi" label-for="dropdown-form-provinsi" >
-          <b-form-input v-model="provinsi"
-            id="dropdown-form-provinsi"
-            size="sm"
-            placeholder="Provinsi"
-          ></b-form-input>
-        </b-form-group>
+              <b-form-group label="Provinsi" label-for="dropdown-form-provinsi" >
+                <b-form-input v-model="provinsi"
+                  id="dropdown-form-provinsi"
+                  size="sm"
+                  placeholder="Provinsi"
+                ></b-form-input>
+              </b-form-group>
 
-        <b-form-group label="Kota" label-for="dropdown-form-kota" >
-          <b-form-input v-model="kota"
-            id="dropdown-form-kota"
-            size="sm"
-            placeholder="Kota"
-          ></b-form-input>
-        </b-form-group>
+              <b-form-group label="Kota" label-for="dropdown-form-kota" >
+                <b-form-input v-model="kota"
+                  id="dropdown-form-kota"
+                  size="sm"
+                  placeholder="Kota"
+                ></b-form-input>
+              </b-form-group>
 
-        <b-form-group label="Alamat" label-for="dropdown-form-alamat" >
-          <b-form-input v-model="alamat"
-            id="dropdown-form-alamat"
-            size="sm"
-            placeholder="Alamat"
-          ></b-form-input>
-        </b-form-group>
+              <b-form-group label="Alamat" label-for="dropdown-form-alamat" >
+                <b-form-input v-model="alamat"
+                  id="dropdown-form-alamat"
+                  size="sm"
+                  placeholder="Alamat"
+                ></b-form-input>
+              </b-form-group>
 
-        <b-form-group label="KodePos" label-for="dropdown-form-kodepos" >
-          <b-form-input v-model="kodepos"
-            id="dropdown-form-kodepos"
-            size="sm"
-            placeholder="Kode Pos"
-          ></b-form-input>
-        </b-form-group>
+              <b-form-group label="KodePos" label-for="dropdown-form-kodepos" >
+                <b-form-input v-model="kodepos"
+                  id="dropdown-form-kodepos"
+                  size="sm"
+                  placeholder="Kode Pos"
+                ></b-form-input>
+              </b-form-group>
 
-        <b-button variant="primary" size="sm" v-show="!updateSubmit" @click="onClick">Add</b-button>
-        <b-button variant="primary" size="sm" v-show="updateSubmit" @click="onClickUpdate">Update</b-button>
-      </b-dropdown-form>
-    </b-dropdown>
-
+                <b-button variant="primary" size="sm" v-show="!updateSubmit" @click="onClick">Add</b-button>
+                <b-button variant="primary" size="sm" v-show="updateSubmit" @click="onClickUpdate">Update</b-button>
+            </b-dropdown-form>
+          </b-dropdown>
+          <b-button @click="onClickrender" variant="primary">
+            Refresh Form
+          </b-button>
         <c-table v-on:row-clicked="onClickForm($event)" :table-data="items" fixed bordered caption="<i class='fa fa-align-justify'></i> Table Mitra"></c-table>
       </b-col>
     </b-row>
@@ -119,13 +120,27 @@ let cDeleted
 const someData = () => (async function(){
     let value
     token = localStorage.getItem('tokena')
-    Getmitra = await axios.post('http://gbi.sytes.net:3000/mitra',{token: token, _method: "GET"})//.then(Response => this.mitra = Response.data);
+    Getmitra = await axios.post('http://gbi.sytes.net:3000/mitra',{token: token, _method: "GET"}).catch(error => console.log('Ada Error') ) //.then(Response => this.mitra = Response.data);
     //axios.get('http://gbi.sytes.net/mitra').then((Response) => console.log(Response));
     // return Object.entries(Getmitra.data.values[1])
     var temp = []
+    var temp2=[]
     Object.values(Getmitra.data.values).forEach((entry) => {
       temp.push(entry)
     })
+    // var obj = JSON.stringify(temp)
+    // console.log(obj)
+    // var stringify = JSON.parse(obj);
+    //   for (var i = 0; i < stringify.length; i++) {
+    //     console.log(stringify[i]['nama_negara']);
+    // }
+    var obj = JSON.stringify(temp)
+    var stringify = JSON.parse(obj);
+      for (var i = 0; i < stringify.length; i++) {
+        console.log(stringify[i]['nama_negara']);
+        temp2.push(stringify[i]['nama_negara'])
+      }
+      console.log(temp2)
     return temp
     })
 
@@ -154,7 +169,7 @@ export default {
     onClick(){
       // if(token === null || this.alamat === null || this.name === null || this.kategori === null || this.negara === null || this.jenis === null || this.email === null || this.provinsi === null || this.kota === null || this.kodepos === null){
       //   alert("Add data gagal")
-      //   location.reload();
+      //   location.reload(); KEMANA pak
       // }else{
       var KirimData = axios.post('http://gbi.sytes.net:3000/mitra',{token,affiliateName:this.name,category:this.kategori,nation:this.negara ,type:this.jenis ,email: this.email,province: this.provinsi,city: this.kota,address:this.alamat,postalCode:this.kodepos})
       this.$refs.dropdown.hide(true)
@@ -186,7 +201,6 @@ export default {
       //}
     },
       onClickForm:function(onClickedForm){
-      alert(JSON.stringify(onClickedForm))
       cId = JSON.stringify(onClickedForm['id_mitra']).replace(/"/g, '')
       var cName = JSON.stringify(onClickedForm['nama_mitra']).replace(/"/g, '')
       var cKategori = JSON.stringify(onClickedForm['kategori_mitra_id']).replace(/"/g, '')
@@ -209,6 +223,17 @@ export default {
       this.kodepos = cKodepos
       this.kota = cKota
       this.updateSubmit = true
+    },onClickrender(){
+      this.name = null
+      this.email = null
+      this.alamat = null
+      this.kategori = null
+      this.negara = null
+      this.jenis = null
+      this.provinsi = null
+      this.kodepos = null
+      this.kota = null
+      this.updateSubmit = false
     }
   }
 }

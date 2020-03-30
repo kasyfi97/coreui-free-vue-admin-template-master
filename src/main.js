@@ -8,14 +8,13 @@ import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
 import App from './App'
 import router from './router'
-import VueSession from 'vue-session'
+
 
 
 // todo
 // cssVars()
 
 Vue.use(BootstrapVue)
-Vue.use(VueSession)
 
 window.axios = require('axios');
 
@@ -29,6 +28,6 @@ new Vue({
   },
   
   data:{
-    mitra:null,
+    data:null,
   }
 })

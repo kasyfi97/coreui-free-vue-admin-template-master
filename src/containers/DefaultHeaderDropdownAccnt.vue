@@ -7,7 +7,7 @@
         alt="admin@bootstrapmaster.com" />
     </template>\
     <template slot="dropdown">
-      <b-dropdown-item><i class="fa fa-lock" /> Logout</b-dropdown-item>
+      <b-dropdown-item @click="Logout"><i class="fa fa-lock" />Logout</b-dropdown-item>
     </template>
   </AppHeaderDropdown>
 </template>
@@ -21,6 +21,13 @@ export default {
   },
   data: () => {
     return { itemsCount: 42 }
+  },
+  methods:{
+    Logout(){
+      localStorage.setItem('tokena',null)
+      this.$router.push({path: '/pages/login'})
+      console.log(localStorage.getItem('tokena'))
+    }
   }
 }
 </script>

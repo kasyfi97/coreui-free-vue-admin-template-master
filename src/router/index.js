@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+let token = localStorage.getItem('tokena')
 
 // Containers
 const DefaultContainer = () => import('@/containers/DefaultContainer')
@@ -65,7 +66,7 @@ function configRoutes() {
   return [
     {
       path: '/',
-      redirect: '/dashboard',
+      redirect: '/pages/login',
       name: 'Home',
       component: DefaultContainer,
       children: [
@@ -134,7 +135,13 @@ function configRoutes() {
             {
               path: 'tablepic',
               name: 'Tablepic',
-              component: Tablesp
+              component: Tablesp,
+              beforeEnter:(to, from, next) =>{
+                if(to.name !== 'Login' && token === null)next({name:'Login'})
+                else{
+                  next()
+                }
+              }
             },
             {
               path: 'tabledokumen',

@@ -7,11 +7,11 @@ export default {
       badge: {
         variant: 'primary',
         text: 'NEW'
-      }
+      },attributes: { disabled: true },
     },
     {
       title: true,
-      name: 'Components',
+      name: 'Menu',
       class: '',
       wrapper: {
         element: '',

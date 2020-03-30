@@ -19,10 +19,7 @@
                   </b-input-group>
                   <b-row>
                     <b-col cols="6">
-                      <b-button type="submit" variant="primary" class="px-4" >Login</b-button>
-                    </b-col>
-                    <b-col cols="6" class="text-right">
-                      <b-button variant="link" class="px-0">Forgot password?</b-button>
+                      <b-button type="submit" variant="primary" class="px-4" ><b-spinner v-show="onLoad" small></b-spinner>    Login</b-button>
                     </b-col>
                   </b-row>
                 </b-form>
@@ -46,25 +43,28 @@ export default {
   name: 'Login',
   data(){
     return {
-      username:'',
-      password:'',
+      username:null,
+      password:null,
+      onLoad:false
     }
   },
   methods:{
     Login(){
       LoginData = axios.post('http://gbi.sytes.net:3000/login',{username: this.username,password: this.password})
-      LoginData.then(Response => {
+      this.onLoad = true
+      LoginData
+      .then(Response => {
           // this.$session.start()
           // this.$session.set('jwt', Response.data.values.token_jwt)
           // console.log(this.$session)
           const token = Response.data.values.token_jwt
           console.log("ini pas login", token)
           localStorage.setItem('tokena',token)
-          window.location.href = ('http://localhost:8080/#/dashboard')                
+          this.$router.push({path: '/dashboard'})
         })
-        
-        //console.log(Response)})
-    }
+        .catch(error => alert('Login gagal'))
+
+    },
   }
 }
 </script>
