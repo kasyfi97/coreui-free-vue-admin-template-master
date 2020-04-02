@@ -169,6 +169,7 @@ let Getmitra;
 var temp2mitra;
 var cTahun;
 var cJudul
+var mitrasSend
 
 const someData = () =>
   async function() {
@@ -296,15 +297,12 @@ export default {
   },
   methods: {
     onClick() {
-      //var KirimData = axios.get('https//gbi.sytes.net:3000/docs/'+ ,{token:token})
       if (this.clicked === false) this.clicked = true;
       else {
         this.clicked = false;
       }
-      var mitrasSend = [];
+      mitrasSend = [];
       mitrasSend.push(this.mitra1, this.mitra2);
-      console.log(mitrasSend);
-      console.log(this.file);
       let formData = new FormData();
       formData.append("token", token);
       formData.append("tahun", this.tahun);
@@ -321,12 +319,7 @@ export default {
       formData.append("reason", this.Alasan);
       formData.append("autorenew", this.renew);
 
-      console.log(formData);
-
-      var KirimData = axios
-        .post(
-          "http://gbi.sytes.net:3000/dokumen",
-          formData
+      var KirimData = axios.post("http://gbi.sytes.net:3000/dokumen",formData
           // {
           //   token,
           //   tahun:this.tahun,
@@ -344,9 +337,8 @@ export default {
           //   reason:this.Alasan,
           //   autorenew:this.renew,
           //   }
-        )
-        .catch(error => this.$router.push({ path: "/pages/500" }));
-      // location.reload();
+        ).catch(error => this.$router.push({ path: "/pages/500" }));
+        location.reload();
     },
     onClickForm: function(onClickedForm) {
       //alert(JSON.stringify(onClickedForm))
@@ -420,6 +412,7 @@ export default {
       this.refDokumen = cDokumenRef;
       this.mitra1 = cMitra1;
       this.mitra2 = cMitra2;
+      
       this.file = cLinkDokumen;
 
       //alert(cEmail)
@@ -441,44 +434,21 @@ export default {
       this.updateSubmit = false;
     },
     onClickUpdate() {
-      if (
-        token === null ||
-        this.address === null ||
-        this.tel === null ||
-        this.email === null ||
-        this.fullName === null
-      ) {
-        alert("Update data gagal");
-        console.log("masuk ke update gagal");
-        // location.reload();
-      } else {
-        var updateData = axios.put("http://gbi.sytes.net:3000/pic", {
-          token,
-          personId: this.personId,
-          address: this.address,
-          tel: this.tele,
-          email: this.email,
-          fullName: this.name
-        });
+        let formData = new FormData();
+          formData.append("token", token);
+          formData.append("id", this.tahun);
+          formData.append("judul_dokumen", this.judul);
+          formData.append("no_dokumen", this.noDokumen);
+          formData.append("jenis_dokumen_id", this.selected);
+          formData.append("tgl_awal", this.valueTanggalMulai);
+          formData.append("tgl_akhir", this.valueTanggalAkhir);
+          formData.append("file", this.file);
+        var updateData = axios.put("http://gbi.sytes.net:3000/dokumen", formData).catch(error => this.$router.push({ path: "/pages/500" }));
         this.updateSubmit = false;
         console.log("masuk ke updte berhasil");
-        // location.reload();
-      }
+        location.reload();     
     },
     onDownload() {
-      // axios
-      //   .get('http://gbi.sytes.net:3000/docs/' + cTahun,{token:token,
-      //     responseType: "arraybuffer",
-      //     headers:{'Accept': 'application/pdf'}
-      //   })
-      //   .then(response => {
-      //     console.log(response);
-      //     // response.data is an empty object
-      //     const blob = new Blob([response.data], {
-      //       type: 'application/pdf',
-      //     });
-      //     FileSaver.saveAs(blob); // Mostly the same, I was just experimenting with different approaches, tried link.click, iframe and other solutions
-      //       })
       console.log(token)
       var downloadDokumen = axios.post("http://gbi.sytes.net:3000/docs/"+cTahun,{_method: "GET",token:token},{
           responseType: 'blob',
@@ -491,7 +461,7 @@ export default {
             link.setAttribute('download', cTahun+' '+cJudul+'.pdf');
             document.body.appendChild(link);
             link.click();
-          });
+          }).catch(error => this.$router.push({ path: "/pages/500" }));
       // window.open(downloadDokumen);
     },
   }

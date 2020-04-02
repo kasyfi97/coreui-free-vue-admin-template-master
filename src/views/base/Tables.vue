@@ -118,11 +118,8 @@ let cDeleted
 // }
 
 const someData = () => (async function(){
-    let value
-    token = localStorage.getItem('tokena')
-    Getmitra = await axios.post('http://gbi.sytes.net:3000/mitra',{token: token, _method: "GET"}).catch(error => console.log('Ada Error') ) //.then(Response => this.mitra = Response.data);
-    //axios.get('http://gbi.sytes.net/mitra').then((Response) => console.log(Response));
-    // return Object.entries(Getmitra.data.values[1])
+
+    Getmitra = await axios.post('http://gbi.sytes.net:3000/mitra',{token: token, _method: "GET"}).catch(error => console.log('Ada Error') )
     var temp = []
     var temp2=[]
     Object.values(Getmitra.data.values).forEach((entry) => {
