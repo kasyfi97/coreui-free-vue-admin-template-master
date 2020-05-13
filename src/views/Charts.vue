@@ -24,21 +24,21 @@ export default {
     datacollection: null
   }
 },
-created () {
+mounted(){
   //anytime the vue instance is created, call the fillData() function.
-  this.fillData()
+  
 },
 methods: {
   fillData () {
     this.datacollection = {
       // Data for the y-axis of the chart
-      labels: ['Indonesia'],
+      labels: ['Indonesia','Malaysia','Singapura','Korea','Jepang','Tiongkok','Thailand'],
       datasets: [
         {
           label: 'Kerja Sama',
           backgroundColor: '#f87979',
           // Data for the x-axis of the chart
-          data: [jumlah, 20, 30, 40, 50]
+          data: [jumlah, jumlah+1, 22, 25, 21, 25, 22, 10]
         }
       ]
     }
@@ -47,7 +47,7 @@ methods: {
     // JS function to generate numbers to be used for the chart
     return Math.floor(Math.random() * (50 - 5 + 1)) + 5
   }
-},  async mounted () {
+},async mounted () {
     try { 
       token = localStorage.getItem('tokena')
       var Getmitra  = await axios.post('http://gbi.sytes.net:3000/mitra',{token: token, _method: "GET"}).catch(error => console.log('Ada Error') )
@@ -62,7 +62,7 @@ methods: {
         console.log(stringify[i]['nama_negara']);
         temp2.push(stringify[i]['nama_negara'])
       }
-      jumlah =temp2.length
+      jumlah = temp2.length
     } catch (e) {
       console.error(e)
     }

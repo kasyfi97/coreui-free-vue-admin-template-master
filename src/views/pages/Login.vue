@@ -53,14 +53,15 @@ export default {
       LoginData = axios.post('http://gbi.sytes.net:3000/login',{username: this.username,password: this.password})
       this.onLoad = true
       LoginData
-      .then(Response => {
-          // this.$session.start()
-          // this.$session.set('jwt', Response.data.values.token_jwt)
-          // console.log(this.$session)
+      .then(Response => {if(Response.data.message == 'success'){
           const token = Response.data.values.token_jwt
           console.log("ini pas login", token)
           localStorage.setItem('tokena',token)
+          console.log(Response)
           this.$router.push({path: '/dashboard'})
+          }else{
+            alert('ID atau Password salah')
+          }
         })
         .catch(error => alert('Login gagal'))
 

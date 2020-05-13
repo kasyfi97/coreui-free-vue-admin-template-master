@@ -2,6 +2,7 @@
   <div class="animated fadeIn" vf>
     <b-row>
       <b-col lg="12">
+        
         <b-dropdown
           boundary
           id="dropdown-form"
@@ -11,8 +12,9 @@
           enctype="multipart/form-data"
           @submit.stop.prevent
         >
-          <b-dropdown-form enctype="multipart/form-data" @submit.stop.prevent>
-            <b-form-group label="Tahun" label-for="dropdown-form-Tahun">
+        <form-wizard>
+          <tab-content title="Step Pertama">
+           <b-form-group label="Tahun" label-for="dropdown-form-Tahun">
               <b-form-input
                 v-model="tahun"
                 id="dropdown-form-Tahun"
@@ -43,12 +45,20 @@
               <b-form-invalid-feedback id="input-live-feedback">Tidak Boleh Kosong</b-form-invalid-feedback>
             </b-form-group>
 
+
+          </tab-content>
+
+          <tab-content title="Step 2">
+              
             <b-form-group label="Jenis Dokumen">
               <b-form-radio v-model="selected" name="Jenis" value="1">SKB</b-form-radio>
               <b-form-radio v-model="selected" name="Jenis" value="2">PKS</b-form-radio>
               <b-form-radio v-model="selected" name="Jenis" value="3">PKSA</b-form-radio>
             </b-form-group>
 
+          </tab-content>
+
+          <tab-content title="Step 3">
             <b-form-group label="Manfaat Dokumen" label-for="dropdown-form-manfaat">
               <b-form-input
                 v-model="manfaat"
@@ -58,7 +68,28 @@
               ></b-form-input>
             </b-form-group>
 
-            <b-form-group validated label="Tanggal Mulai" label-for="dropdown-form-tanggal-Mulai">
+            
+            <b-form-group label="Ref Dokumen" label-for="dropdown-form-ref">
+              <b-form-input
+                v-model="refDokumen"
+                id="dropdown-form-Ref"
+                size="sm"
+                placeholder="Dokumen Ref"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Link Peserta" label-for="dropdown-form-Peserta">
+              <b-form-input
+                v-model="peserta"
+                id="dropdown-form-Peserta"
+                size="sm"
+                placeholder="Link Peserta"
+              ></b-form-input>
+            </b-form-group>
+          </tab-content>
+
+          <tab-content title="Step 4">
+             <b-form-group validated label="Tanggal Mulai" label-for="dropdown-form-tanggal-Mulai">
               <b-form-input
                 id="mulai-input"
                 v-model="valueTanggalMulai"
@@ -80,15 +111,6 @@
               <b-form-invalid-feedback id="input-live-feedback">Tidak Boleh Kosong</b-form-invalid-feedback>
             </b-form-group>
 
-            <b-form-group label="Ref Dokumen" label-for="dropdown-form-ref">
-              <b-form-input
-                v-model="refDokumen"
-                id="dropdown-form-Ref"
-                size="sm"
-                placeholder="Dokumen Ref"
-              ></b-form-input>
-            </b-form-group>
-
             <b-form-group validated label="Mitra 1" label-for="dropdown-form-mitra1">
               <b-form-select v-model="mitra1" :options="options" required></b-form-select>
             </b-form-group>
@@ -96,17 +118,10 @@
             <b-form-group validated label="Mitra 2" label-for="dropdown-form-mitra2">
               <b-form-select v-model="mitra2" :options="options" required></b-form-select>
             </b-form-group>
-
-            <b-form-group label="Link Peserta" label-for="dropdown-form-Peserta">
-              <b-form-input
-                v-model="peserta"
-                id="dropdown-form-Peserta"
-                size="sm"
-                placeholder="Link Peserta"
-              ></b-form-input>
-            </b-form-group>
-
-            <b-form-group label="Warning Time" label-for="dropdown-form-warning">
+          </tab-content>
+          
+          <tab-content title="Step 5">
+             <b-form-group label="Warning Time" label-for="dropdown-form-warning">
               <b-form-input
                 v-model="warningTime"
                 id="dropdown-form-Warning"
@@ -132,7 +147,7 @@
               unchecked-value="No"
             >Auto Renew</b-form-checkbox>
 
-            <b-form-file v-model="file" class="mt-3" plain></b-form-file>
+            <b-form-file accept=".pdf" v-model="file" class="mt-3" plain></b-form-file>
 
             <b-button variant="primary" size="sm" v-show="!updateSubmit" @click="onClick">Add</b-button>
             <b-button
@@ -141,6 +156,10 @@
               v-show="updateSubmit"
               @click="onClickUpdate"
             >Update</b-button>
+          </tab-content>
+        </form-wizard>
+          <b-dropdown-form enctype="multipart/form-data" @submit.stop.prevent>          
+
           </b-dropdown-form>
         </b-dropdown>
         <b-button @click="onDownload" variant="primary">
@@ -162,6 +181,8 @@
 <script>
 import { shuffleArray } from "@/shared/utils";
 import cTable from "./Table.vue";
+import {FormWizard, TabContent} from 'vue-form-wizard'
+import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 const FileSaver = require('file-saver');
 let dokumen;
 let token;
@@ -177,14 +198,14 @@ const someData = () =>
     let key;
     token = localStorage.getItem("tokena");
     dokumen = await axios
-      .post("http://gbi.sytes.net:3000/dokumen", {
+      .post("https://dksa-backend.it.maranatha.edu/dokumen", {
         token: token,
         _method: "GET"
       })
       .catch(error => console.log("Ada Error dengan Dokumen")); //.then(Response => this.mitra = Response.data);
 
     Getmitra = await axios
-      .post("http://gbi.sytes.net:3000/mitra", { token: token, _method: "GET" })
+      .post("https://dksa-backend.it.maranatha.edu/mitra", { token: token, _method: "GET" })
       .catch(error => console.log("Ada Error dengan Mitra")); //.then(Response => this.mitra = Response.data);
 
     var tempmitra = [];
@@ -270,7 +291,8 @@ export default {
     }
   },
   name: "tablesd",
-  components: { cTable },
+  components: { cTable,FormWizard,
+  TabContent },
   data: () => {
     return {
       tahun: "",
@@ -463,7 +485,10 @@ export default {
             link.click();
           }).catch(error => this.$router.push({ path: "/pages/500" }));
       // window.open(downloadDokumen);
-    },
+    },created () {
+      //anytime the vue instance is created, call the fillData() function.
+      this.onClickrender()
+    }
   }
 };
 </script>

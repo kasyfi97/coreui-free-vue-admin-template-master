@@ -84,6 +84,9 @@
           <b-button @click="onClickrender" variant="primary">
             Refresh Form
           </b-button>
+          <b-button @click="onDelete" variant="primary">
+            Delete
+          </b-button>
         <c-table v-on:row-clicked="onClickForm($event)" :table-data="items" fixed bordered caption="<i class='fa fa-align-justify'></i> Table Mitra"></c-table>
       </b-col>
     </b-row>
@@ -98,27 +101,11 @@ let Getmitra
 let token
 let cId
 let cDeleted
-// async function(){
-//     const Getmitra = await axios.get('http://gbi.sytes.net/mitra')//.then(Response => this.mitra = Response.data);
-//     //axios.get('http://gbi.sytes.net/mitra').then((Response) => console.log(Response));
-//     return Getmitra.data
-
-// const tempData = () => async function(){
-//     let value
-//     let key
-//     Getmitra = await axios.get('http://gbi.sytes.net/mitra')//.then(Response => this.mitra = Response.data);
-//     //axios.get('http://gbi.sytes.net/mitra').then((Response) => console.log(Response));
-//     // return Object.entries(Getmitra.data.values[1])
-//     Object.values(Getmitra.data.values).forEach((entry) => {
-//       for (var key in entry) {
-//         if (entry.hasOwnProperty(key)) {
-//         console.log(key + " -> " + entry[key]);
-//     }}
-//     })
-// }
+//isDeleted
+//affliateId
 
 const someData = () => (async function(){
-
+    token = localStorage.getItem('tokena')
     Getmitra = await axios.post('http://gbi.sytes.net:3000/mitra',{token: token, _method: "GET"}).catch(error => console.log('Ada Error') )
     var temp = []
     var temp2=[]
@@ -221,17 +208,21 @@ export default {
       this.kota = cKota
       this.updateSubmit = true
     },onClickrender(){
-      this.name = null
-      this.email = null
-      this.alamat = null
-      this.kategori = null
-      this.negara = null
-      this.jenis = null
-      this.provinsi = null
-      this.kodepos = null
-      this.kota = null
+      this.name = ''
+      this.email = ''
+      this.alamat = ''
+      this.kategori = ''
+      this.negara = ''
+      this.jenis = ''
+      this.provinsi = ''
+      this.kodepos = ''
+      this.kota = ''
       this.updateSubmit = false
-    }
+    },onDelete(){
+      var dDeleted = '1'
+      var KirimData = axios.post('http://gbi.sytes.net:3000/mitra',{token,affiliateId:cId,_method: "delete"})
+      location.reload();
+      }
   }
 }
 </script>

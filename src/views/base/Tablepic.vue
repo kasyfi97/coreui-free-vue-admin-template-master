@@ -68,6 +68,9 @@
           <b-button @click="onClickrender" variant="primary">
             Refresh Form
           </b-button>
+          <b-button @click="onDelete" variant="primary">
+            Delete
+          </b-button>
           <c-table v-on:row-clicked="onClickForm($event)" :table-data="items" fixed bordered caption="<i class='fa fa-align-justify'></i> Table PIC">
         </c-table>
       </b-col>
@@ -82,6 +85,7 @@ import cTable from './Table.vue'
 
 let PIC
 let token
+var cId 
 
 const someData = () => (async function(){
     let value
@@ -93,6 +97,7 @@ const someData = () => (async function(){
     Object.values(PIC.data.values).forEach((entry) => {
       temp.push(entry)
     })
+    console.log(PIC)
     return temp
     })
 
@@ -158,7 +163,7 @@ export default {
         console.log('masuk ke data gagal')
         location.reload();
       }else{
-      var KirimData = axios.post('http://gbi.sytes.net:3000/pic',{token,personId:this.personId,address:this.address ,tel:this.tele ,email: this.email,fullName: this.name}).
+      var KirimData = axios.post('http://gbi.sytes.net:3000/pic',{token,personId:this.personId,address:this.address ,tel:this.tele ,email: this.email,fullName: this.name})
       // this.$refs.dropdown.hide(true)
       alert("Add data Berhasil")
       console.log('masuk ke data berhasil')
@@ -169,12 +174,12 @@ export default {
     onClickUpdate(){
       if( token === null  || this.address === null || this.tel === null || this.email=== null || this.fullName=== null){
         alert("Update data gagal");
-        console.log('masuk ke updte gagal')
+        console.log('masuk ke update gagal')
         // location.reload();
       }else{
       var updateData = axios.put('http://gbi.sytes.net:3000/pic',{token,personId:this.personId,address:this.address ,tel:this.tele ,email: this.email,fullName: this.name})
       this.updateSubmit = false
-      console.log('masuk ke updte berhasil')
+      console.log('masuk ke update berhasil')
       // location.reload();
       }
     },
@@ -184,7 +189,7 @@ export default {
       var cAddress = JSON.stringify(onClickedForm['alamat']).replace(/"/g, '')
       var cNama = JSON.stringify(onClickedForm['nama_lengkap']).replace(/"/g, '')
       var cTele = JSON.stringify(onClickedForm['nomor_telepon']).replace(/"/g, '')
-      var cId = JSON.stringify(onClickedForm['id']).replace(/"/g, '')
+      cId = JSON.stringify(onClickedForm['id']).replace(/"/g, '')
 
       this.name = cNama
       this.email = cEmail
@@ -192,7 +197,6 @@ export default {
       this.tele = cTele
       this.personId = cId
 
-      //alert(cEmail)
       this.updateSubmit = true
     },onClickrender(){
       this.name = null
@@ -201,6 +205,9 @@ export default {
       this.tele = null
       this.personId = null
       this.updateSubmit = false
+    },onDelete(){
+      var KirimData = axios.post('http://gbi.sytes.net:3000/pic',{token,personId:cId,_method: "delete"})
+      location.reload();
     }
   }
 }
