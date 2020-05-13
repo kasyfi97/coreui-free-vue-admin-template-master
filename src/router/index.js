@@ -135,13 +135,7 @@ function configRoutes() {
             {
               path: 'tablepic',
               name: 'Tablepic',
-              component: Tablesp,
-              beforeEnter:(to, from, next) =>{
-                if(to.name !== 'Login' && token === null)next({name:'Login'})
-                else{
-                  next()
-                }
-              }
+              component: Tablesp           
             },
             {
               path: 'tabledokumen',
