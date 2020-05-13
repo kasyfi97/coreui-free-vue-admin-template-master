@@ -198,14 +198,14 @@ const someData = () =>
     let key;
     token = localStorage.getItem("tokena");
     dokumen = await axios
-      .post("https://dksa-backend.it.maranatha.edu/dokumen", {
+      .post("http://gbi.sytes.net:3000/dokumen", {
         token: token,
         _method: "GET"
       })
       .catch(error => console.log("Ada Error dengan Dokumen")); //.then(Response => this.mitra = Response.data);
 
     Getmitra = await axios
-      .post("https://dksa-backend.it.maranatha.edu/mitra", { token: token, _method: "GET" })
+      .post("http://gbi.sytes.net:3000/mitra", { token: token, _method: "GET" })
       .catch(error => console.log("Ada Error dengan Mitra")); //.then(Response => this.mitra = Response.data);
 
     var tempmitra = [];
