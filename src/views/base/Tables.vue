@@ -125,6 +125,76 @@ const someData = () => (async function(){
         temp2.push(stringify[i]['nama_negara'])
       }
       console.log(temp2)
+
+      for(const obj of temp) {
+      obj.Nomor_Mitra = obj.id_mitra;
+      delete obj.id_mitra;
+      }
+
+      for(const obj of temp) {
+      obj.Nama_Mitra = obj.nama_mitra;
+      delete obj.nama_mitra;
+      }
+
+      for(const obj of temp) {
+      obj.Kategori_Mitra = obj.kategori_mitra_id;
+      delete obj.kategori_mitra_id;
+      }
+
+      for(const obj of temp) {
+      obj.Jenis_Mitra = obj.jenis_mitra_id;
+      delete obj.jenis_mitra_id;
+      }
+
+      for(const obj of temp) {
+      obj.Email = obj.email;
+      delete obj.email;
+      }
+
+      for(const obj of temp) {
+      obj.ID_Negara = obj.negara_id;
+      delete obj.negara_id;
+      }
+
+      for(const obj of temp) {
+      obj.Provinsi = obj.provinsi;
+      delete obj.provinsi;
+      }
+
+      for(const obj of temp) {
+      obj.Kota = obj.kota;
+      delete obj.kota;
+      }
+
+      for(const obj of temp) {
+      obj.Alamat = obj.alamat;
+      delete obj.alamat;
+      }
+      
+      for(const obj of temp) {
+      obj.Kodepos = obj.kode_pos;
+      delete obj.kode_pos;
+      }
+
+      for(const obj of temp) {
+      obj.Nama_Kategori = obj.nama_kategori;
+      delete obj.nama_kategori;
+      }
+
+      for(const obj of temp) {
+      obj.Nama_Jenis = obj.nama_jenis;
+      delete obj.nama_jenis;
+      }
+
+      for(const obj of temp) {
+      obj.Kode_Negara = obj.kode_negara;
+      delete obj.kode_negara;
+      }
+
+      for(const obj of temp) {
+      obj.Nama_Negara = obj.nama_negara;
+      delete obj.nama_negara;
+      }
     return temp
     })
 
@@ -151,15 +221,10 @@ export default {
     }
   },methods:{
     onClick(){
-      // if(token === null || this.alamat === null || this.name === null || this.kategori === null || this.negara === null || this.jenis === null || this.email === null || this.provinsi === null || this.kota === null || this.kodepos === null){
-      //   alert("Add data gagal")
-      //   location.reload(); KEMANA pak
-      // }else{
       var KirimData = axios.post('http://gbi.sytes.net:3000/mitra',{token,affiliateName:this.name,category:this.kategori,nation:this.negara ,type:this.jenis ,email: this.email,province: this.provinsi,city: this.kota,address:this.alamat,postalCode:this.kodepos})
       this.$refs.dropdown.hide(true)
       alert("Add data Berhasil")
       location.reload();
-   //   }
     },
     onClickUpdate(){
       // if( token === null || this.alamat === null || this.name === null || this.kategori === null || this.negara === null || this.jenis === null || this.email === null || this.provinsi === null || this.kota === null || this.kodepos === null){
@@ -185,17 +250,18 @@ export default {
       //}
     },
       onClickForm:function(onClickedForm){
-      cId = JSON.stringify(onClickedForm['id_mitra']).replace(/"/g, '')
-      var cName = JSON.stringify(onClickedForm['nama_mitra']).replace(/"/g, '')
-      var cKategori = JSON.stringify(onClickedForm['kategori_mitra_id']).replace(/"/g, '')
-      var cJenis = JSON.stringify(onClickedForm['jenis_mitra_id']).replace(/"/g, '')
-      var cEmail = JSON.stringify(onClickedForm['email']).replace(/"/g, '')
-      var cNegara = JSON.stringify(onClickedForm['negara_id']).replace(/"/g, '')
-      var cProvinsi = JSON.stringify(onClickedForm['provinsi']).replace(/"/g, '')
-      var cKota = JSON.stringify(onClickedForm['kota']).replace(/"/g, '')
-      var cAlamat = JSON.stringify(onClickedForm['alamat']).replace(/"/g, '')
-      var cKodepos = JSON.stringify(onClickedForm['kode_pos']).replace(/"/g, '')
-      cDeleted = JSON.stringify(onClickedForm['is_deleted']).replace(/"/g, '')
+      alert(JSON.stringify(onClickedForm))
+      cId = JSON.stringify(onClickedForm['Nomor_Mitra']).replace(/"/g, '')
+      var cName = JSON.stringify(onClickedForm['Nama_Mitra']).replace(/"/g, '')
+      var cKategori = JSON.stringify(onClickedForm['Kategori_Mitra']).replace(/"/g, '')
+      var cJenis = JSON.stringify(onClickedForm['Jenis_Mitra']).replace(/"/g, '')
+      var cEmail = JSON.stringify(onClickedForm['Email']).replace(/"/g, '')
+      var cNegara = JSON.stringify(onClickedForm['ID_Negara']).replace(/"/g, '')
+      var cProvinsi = JSON.stringify(onClickedForm['Provinsi']).replace(/"/g, '')
+      var cKota = JSON.stringify(onClickedForm['Kota']).replace(/"/g, '')
+      var cAlamat = JSON.stringify(onClickedForm['Alamat']).replace(/"/g, '')
+      var cKodepos = JSON.stringify(onClickedForm['Kodepos']).replace(/"/g, '')
+ 
 
       this.name = cName
       this.email = cEmail
@@ -219,7 +285,6 @@ export default {
       this.kota = ''
       this.updateSubmit = false
     },onDelete(){
-      var dDeleted = '1'
       var KirimData = axios.post('http://gbi.sytes.net:3000/mitra',{token,affiliateId:cId,_method: "delete"})
       location.reload();
       }

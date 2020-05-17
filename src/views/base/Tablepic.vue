@@ -98,9 +98,35 @@ const someData = () => (async function(){
       temp.push(entry)
     })
     console.log(PIC)
+
+    for(const obj of temp) {
+      obj.Nomor = obj.id;
+      delete obj.id;
+    }
+
+    for(const obj of temp) {
+      obj.Nama_lengkap = obj.nama_lengkap;
+      delete obj.nama_lengkap;
+    }
+
+    for(const obj of temp) {
+      obj.Nomor_Telepon = obj.nomor_telepon;
+      delete obj.nomor_telepon;
+    }
+
+    for(const obj of temp) {
+      obj.Alamat = obj.alamat;
+      delete obj.alamat;
+    }
+    
+
+    for(const obj of temp) {
+      obj.Email = obj.email;
+      delete obj.email;
+    }
+
     return temp
     })
-
 
 export default {
   computed: {
@@ -184,12 +210,12 @@ export default {
       }
     },
     onClickForm:function(onClickedForm){
-      // alert(JSON.stringify(onClickedForm))
-      var cEmail = JSON.stringify(onClickedForm['email']).replace(/"/g, '')
-      var cAddress = JSON.stringify(onClickedForm['alamat']).replace(/"/g, '')
-      var cNama = JSON.stringify(onClickedForm['nama_lengkap']).replace(/"/g, '')
-      var cTele = JSON.stringify(onClickedForm['nomor_telepon']).replace(/"/g, '')
-      cId = JSON.stringify(onClickedForm['id']).replace(/"/g, '')
+      //alert(JSON.stringify(onClickedForm))
+      var cEmail = JSON.stringify(onClickedForm['Email']).replace(/"/g, '')
+      var cAddress = JSON.stringify(onClickedForm['Alamat']).replace(/"/g, '')
+      var cNama = JSON.stringify(onClickedForm['Nama_lengkap']).replace(/"/g, '')
+      var cTele = JSON.stringify(onClickedForm['Nomor_Telepon']).replace(/"/g, '')
+      cId = JSON.stringify(onClickedForm['Nomor']).replace(/"/g, '')
 
       this.name = cNama
       this.email = cEmail

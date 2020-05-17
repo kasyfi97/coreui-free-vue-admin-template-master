@@ -111,11 +111,11 @@
               <b-form-invalid-feedback id="input-live-feedback">Tidak Boleh Kosong</b-form-invalid-feedback>
             </b-form-group>
 
-            <b-form-group validated label="Mitra 1" label-for="dropdown-form-mitra1">
+            <b-form-group v-show="!updateSubmit" validated label="Mitra 1" label-for="dropdown-form-mitra1">
               <b-form-select v-model="mitra1" :options="options" required></b-form-select>
             </b-form-group>
 
-            <b-form-group validated label="Mitra 2" label-for="dropdown-form-mitra2">
+            <b-form-group v-show="!updateSubmit" validated label="Mitra 2" label-for="dropdown-form-mitra2">
               <b-form-select v-model="mitra2" :options="options" required></b-form-select>
             </b-form-group>
           </tab-content>
@@ -207,7 +207,7 @@ const someData = () =>
     Getmitra = await axios
       .post("http://gbi.sytes.net:3000/mitra", { token: token, _method: "GET" })
       .catch(error => console.log("Ada Error dengan Mitra")); //.then(Response => this.mitra = Response.data);
-
+    
     var tempmitra = [];
     temp2mitra = [];
     Object.values(Getmitra.data.values).forEach(entry => {
@@ -229,12 +229,56 @@ const someData = () =>
     var temp = [];
     var temp2 = [];
     temp = [...dokumen.data.values];
+
+    for(const obj of temp) {
+      obj.Tahun = obj.id;
+      obj.No_Dokumen = obj.no_dokumen;
+      obj.Judul_Dokumen = obj.judul_dokumen;
+      obj.Manfaat_Dokumen = obj.manfaat_dokumen;
+      obj.Tanggal_Awal = obj.tgl_awal;
+      obj.Tanggal_Akhir = obj.tgl_akhir;
+      obj.Dokumen_Ref = obj.dokumen_ref;
+      obj.No_Dokumen = obj.no_dokumen;
+      obj.Link_Dokumen = obj.link_dokumen;
+      obj.Link_Peserta = obj.link_peserta;
+      obj.Waktu_Peringatan = obj.warningtime;
+      obj.Jumlah_Pembaharuan = obj.renew_count;
+      obj.Alasan = obj.reason;
+      obj.Dihapus = obj.is_deleted;
+      obj.Perbaharui = obj.autorenew;
+      obj.Jenis_Dokumen = obj.jenis_dokumen_id;
+      obj.Evaluasi = obj.evaluation;
+      delete obj.id;
+      delete obj.no_dokumen;
+      delete obj.judul_dokumen;
+      delete obj.manfaat_dokumen;
+      delete obj.tgl_awal;
+      delete obj.tgl_akhir;
+      delete obj.dokumen_ref;
+      delete obj.no_dokumen;
+      delete obj.link_dokumen;
+      delete obj.link_peserta;
+      delete obj.warningtime;
+      delete obj.renew_count;
+      delete obj.reason;
+      delete obj.is_deleted;
+      delete obj.autorenew;
+      delete obj.jenis_dokumen_id;
+      delete obj.evaluation;
+    }
+
     temp2 = temp.map(mitra => {
       mitra.mitra_1 = mitra.mitras[0].nama_mitra;
       mitra.mitra_2 = mitra.mitras[1].nama_mitra;
       mitra.mitras = mitra.mitras.length;
       return mitra;
     });
+
+    for(const obj of temp) {
+      delete obj.mitras;
+    }
+
+    
     console.log(temp2);
     return temp2;
   };
@@ -364,48 +408,53 @@ export default {
     },
     onClickForm: function(onClickedForm) {
       //alert(JSON.stringify(onClickedForm))
-      cTahun = JSON.stringify(onClickedForm["id"]).replace(/"/g, "");
-      cJudul = JSON.stringify(onClickedForm["judul_dokumen"]).replace(
+      cTahun = JSON.stringify(onClickedForm["Tahun"]).replace(/"/g, "");
+      cJudul = JSON.stringify(onClickedForm["Judul_Dokumen"]).replace(
         /"/g,
         ""
       );
-      var cNodokumen = JSON.stringify(onClickedForm["no_dokumen"]).replace(
+      var cNodokumen = JSON.stringify(onClickedForm["No_Dokumen"]).replace(
         /"/g,
         ""
       );
       var cJenisDokumen = JSON.stringify(
-        onClickedForm["jenis_dokumen_id"]
+        onClickedForm["Jenis_Dokumen"]
       ).replace(/"/g, "");
-      var cManfaat = JSON.stringify(onClickedForm["manfaat_dokumen"]).replace(
+
+
+      var cManfaat = JSON.stringify(onClickedForm["Manfaat_Dokumen"]).replace(
         /"/g,
         ""
       );
-      var cTanggalAwal = JSON.stringify(onClickedForm["tgl_awal"]).replace(
+      
+      var cTanggalAwal = JSON.stringify(onClickedForm["Tanggal_Awal"]).replace(
         /"/g,
         ""
       );
-      var cTanggalAkhir = JSON.stringify(onClickedForm["tgl_akhir"]).replace(
+      var cTanggalAkhir = JSON.stringify(onClickedForm["Tanggal_Akhir"]).replace(
         /"/g,
         ""
       );
-      var cDokumenRef = JSON.stringify(onClickedForm["dokumen_ref"]).replace(
+
+      var cDokumenRef = JSON.stringify(onClickedForm["Dokumen_Ref"]).replace(
         /"/g,
         ""
       );
-      var cLinkDokumen = JSON.stringify(onClickedForm["link_dokumen"]).replace(
+      
+      var cLinkDokumen = JSON.stringify(onClickedForm["Link_Dokumen"]).replace(
         /"/g,
         ""
       );
-      var cLinkPeserta = JSON.stringify(onClickedForm["link_peserta"]).replace(
+      var cLinkPeserta = JSON.stringify(onClickedForm["Link_Peserta"]).replace(
         /"/g,
         ""
       );
-      var cWarningTime = JSON.stringify(onClickedForm["warningtime"]).replace(
+      var cWarningTime = JSON.stringify(onClickedForm["Waktu_Peringatan"]).replace(
         /"/g,
         ""
       );
-      var cAlasan = JSON.stringify(onClickedForm["reason"]).replace(/"/g, "");
-      var cRenew = JSON.stringify(onClickedForm["autorenew"]).replace(/"/g, "");
+      var cAlasan = JSON.stringify(onClickedForm["Alasan"]).replace(/"/g, "");
+      var cRenew = JSON.stringify(onClickedForm["Perbaharui"]).replace(/"/g, "");
       var cMitra1 = JSON.stringify(onClickedForm["mitra_1"]).replace(/"/g, "");
       var cMitra2 = JSON.stringify(onClickedForm["mitra_2"]).replace(/"/g, "");
 
@@ -458,14 +507,15 @@ export default {
     onClickUpdate() {
         let formData = new FormData();
           formData.append("token", token);
-          formData.append("id", this.tahun);
           formData.append("judul_dokumen", this.judul);
           formData.append("no_dokumen", this.noDokumen);
           formData.append("jenis_dokumen_id", this.selected);
           formData.append("tgl_awal", this.valueTanggalMulai);
           formData.append("tgl_akhir", this.valueTanggalAkhir);
+          formData.append("manfaat_dokumen", this.manfaat);
+          formData.append("dokumen_ref", this.refDokumen);
           formData.append("file", this.file);
-        var updateData = axios.put("http://gbi.sytes.net:3000/dokumen", formData).catch(error => this.$router.push({ path: "/pages/500" }));
+        var updateData = axios.post("http://gbi.sytes.net:3000/dokumen/"+cTahun, formData).catch(error => this.$router.push({ path: "/pages/500" }));
         this.updateSubmit = false;
         console.log("masuk ke updte berhasil");
         location.reload();     
