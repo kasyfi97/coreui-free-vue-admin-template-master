@@ -34,6 +34,11 @@ export default {
       icon: 'icon-puzzle'
     },
     {
+      name: 'Users',
+      url: '/base/Users',
+      icon: 'icon-puzzle'
+    },
+    {
       name: 'Charts',
       url: '/charts',
       icon: 'icon-pie-chart'

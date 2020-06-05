@@ -20,6 +20,7 @@ const Switches = () => import('@/views/base/Switches')
 const Tables = () => import('@/views/base/Tables')
 const Tablesp = () => import('@/views/base/Tablepic')
 const Tablesd = () => import('@/views/base/Tabledokumen')
+const TablesU = () => import('@/views/base/Users')
 const Tabs = () => import('@/views/base/Tabs')
 const Breadcrumbs = () => import('@/views/base/Breadcrumbs')
 const Carousels = () => import('@/views/base/Carousels')
@@ -136,6 +137,11 @@ function configRoutes() {
               path: 'tablepic',
               name: 'Tablepic',
               component: Tablesp           
+            },
+            {
+              path: 'users',
+              name: 'Users',
+              component: TablesU
             },
             {
               path: 'tabledokumen',

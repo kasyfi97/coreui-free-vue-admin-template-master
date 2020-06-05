@@ -93,7 +93,7 @@ const someData = () => (async function(){
     var temp = []
     token = localStorage.getItem('tokena')
     console.log("ini di tabel pic", token)
-    PIC = await axios.post('http://gbi.sytes.net:3000/pic',{token: token, _method: "GET"}).catch(error => this.$router.push({path: '/pages/Page500'})) 
+    PIC = await axios.post('http://dks.it.maranatha.edu:3000/pic',{token: token, _method: "GET"}).catch(error => this.$router.push({path: '/pages/Page500'})) 
     Object.values(PIC.data.values).forEach((entry) => {
       temp.push(entry)
     })
@@ -124,7 +124,7 @@ const someData = () => (async function(){
       obj.Email = obj.email;
       delete obj.email;
     }
-
+    console.log(new Date().toLocaleString())
     return temp
     })
 
@@ -189,7 +189,7 @@ export default {
         console.log('masuk ke data gagal')
         location.reload();
       }else{
-      var KirimData = axios.post('http://gbi.sytes.net:3000/pic',{token,personId:this.personId,address:this.address ,tel:this.tele ,email: this.email,fullName: this.name})
+      var KirimData = axios.post('http://dks.it.maranatha.edu:3000/pic',{token,personId:this.personId,address:this.address ,tel:this.tele ,email: this.email,fullName: this.name})
       // this.$refs.dropdown.hide(true)
       alert("Add data Berhasil")
       console.log('masuk ke data berhasil')
@@ -203,7 +203,7 @@ export default {
         console.log('masuk ke update gagal')
         // location.reload();
       }else{
-      var updateData = axios.put('http://gbi.sytes.net:3000/pic',{token,personId:this.personId,address:this.address ,tel:this.tele ,email: this.email,fullName: this.name})
+      var updateData = axios.put('http://dks.it.maranatha.edu:3000/pic',{token,personId:this.personId,address:this.address ,tel:this.tele ,email: this.email,fullName: this.name})
       this.updateSubmit = false
       console.log('masuk ke update berhasil')
       // location.reload();
@@ -232,7 +232,7 @@ export default {
       this.personId = null
       this.updateSubmit = false
     },onDelete(){
-      var KirimData = axios.post('http://gbi.sytes.net:3000/pic',{token,personId:cId,_method: "delete"})
+      var KirimData = axios.post('http://dks.it.maranatha.edu:3000/pic',{token,personId:cId,_method: "delete"})
       location.reload();
     }
   }

@@ -106,7 +106,7 @@ let cDeleted
 
 const someData = () => (async function(){
     token = localStorage.getItem('tokena')
-    Getmitra = await axios.post('http://gbi.sytes.net:3000/mitra',{token: token, _method: "GET"}).catch(error => console.log('Ada Error') )
+    Getmitra = await axios.post('http://dks.it.maranatha.edu:3000/mitra',{token: token, _method: "GET"}).catch(error => console.log('Ada Error') )
     var temp = []
     var temp2=[]
     Object.values(Getmitra.data.values).forEach((entry) => {
@@ -221,7 +221,7 @@ export default {
     }
   },methods:{
     onClick(){
-      var KirimData = axios.post('http://gbi.sytes.net:3000/mitra',{token,affiliateName:this.name,category:this.kategori,nation:this.negara ,type:this.jenis ,email: this.email,province: this.provinsi,city: this.kota,address:this.alamat,postalCode:this.kodepos})
+      var KirimData = axios.post('http://dks.it.maranatha.edu:3000/mitra',{token,affiliateName:this.name,category:this.kategori,nation:this.negara ,type:this.jenis ,email: this.email,province: this.provinsi,city: this.kota,address:this.alamat,postalCode:this.kodepos})
       this.$refs.dropdown.hide(true)
       alert("Add data Berhasil")
       location.reload();
@@ -231,7 +231,7 @@ export default {
       //   alert("Update data gagal")
       //   location.reload();
       // }else{
-      var updateData = axios.put('http://gbi.sytes.net:3000/mitra',{
+      var updateData = axios.put('http://dks.it.maranatha.edu:3000/mitra',{
         token,
       affiliateName:this.name,
       category:this.kategori,
@@ -285,7 +285,7 @@ export default {
       this.kota = ''
       this.updateSubmit = false
     },onDelete(){
-      var KirimData = axios.post('http://gbi.sytes.net:3000/mitra',{token,affiliateId:cId,_method: "delete"})
+      var KirimData = axios.post('http://dks.it.maranatha.edu:3000/mitra',{token,affiliateId:cId,_method: "delete"})
       location.reload();
       }
   }

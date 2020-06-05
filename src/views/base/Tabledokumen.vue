@@ -191,6 +191,8 @@ var temp2mitra;
 var cTahun;
 var cJudul
 var mitrasSend
+let expired = 0
+let warning = 0
 
 const someData = () =>
   async function() {
@@ -198,14 +200,14 @@ const someData = () =>
     let key;
     token = localStorage.getItem("tokena");
     dokumen = await axios
-      .post("http://gbi.sytes.net:3000/dokumen", {
+      .post("http://dks.it.maranatha.edu:3000/dokumen", {
         token: token,
         _method: "GET"
       })
       .catch(error => console.log("Ada Error dengan Dokumen")); //.then(Response => this.mitra = Response.data);
 
     Getmitra = await axios
-      .post("http://gbi.sytes.net:3000/mitra", { token: token, _method: "GET" })
+      .post("http://dks.it.maranatha.edu:3000/mitra", { token: token, _method: "GET" })
       .catch(error => console.log("Ada Error dengan Mitra")); //.then(Response => this.mitra = Response.data);
     
     var tempmitra = [];
@@ -277,9 +279,47 @@ const someData = () =>
     for(const obj of temp) {
       delete obj.mitras;
     }
+    var q = new Date();
+    var m = q.getMonth();
+    var d = q.getDay();
+    var y = q.getFullYear();
 
+    var date = new Date(y,m,d);
+
+    var mydate=new Date('2020-06-30');
+    console.log(date);
+    console.log(mydate)
+
+    if(mydate>date)
+    {
+        console.log("abis");
+    }
+    else
+    {
+        console.log("ada");
+    }
+    var result = [];
+
+    // read all items of data.
+    temp.forEach(function(item) {
+    var DateTemp
+     // read all keys of item.
+    Object.keys(item).forEach(function(key) {
+        result.push(item[key]);
+    });
+    var DateTemp = new Date(item.Tanggal_Akhir)
+    if(date>DateTemp)
+    {
+        expired = expired +1
+    }
+    else
+    {
+        warning = warning +1
+    }
+    console.log(expired)
+    console.log(warning)
+    });
     
-    console.log(temp2);
     return temp2;
   };
 
@@ -385,7 +425,7 @@ export default {
       formData.append("reason", this.Alasan);
       formData.append("autorenew", this.renew);
 
-      var KirimData = axios.post("http://gbi.sytes.net:3000/dokumen",formData
+      var KirimData = axios.post("http://dks.it.maranatha.edu:3000/dokumen",formData
           // {
           //   token,
           //   tahun:this.tahun,
@@ -515,14 +555,14 @@ export default {
           formData.append("manfaat_dokumen", this.manfaat);
           formData.append("dokumen_ref", this.refDokumen);
           formData.append("file", this.file);
-        var updateData = axios.post("http://gbi.sytes.net:3000/dokumen/"+cTahun, formData).catch(error => this.$router.push({ path: "/pages/500" }));
+        var updateData = axios.post("http://dks.it.maranatha.edu:3000/dokumen/"+cTahun, formData).catch(error => this.$router.push({ path: "/pages/500" }));
         this.updateSubmit = false;
         console.log("masuk ke updte berhasil");
         location.reload();     
     },
     onDownload() {
       console.log(token)
-      var downloadDokumen = axios.post("http://gbi.sytes.net:3000/docs/"+cTahun,{_method: "GET",token:token},{
+      var downloadDokumen = axios.post("http://dks.it.maranatha.edu:3000/docs/"+cTahun,{_method: "GET",token:token},{
           responseType: 'blob',
           }).then((response) => {      
             console.log(response);

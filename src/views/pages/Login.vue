@@ -50,7 +50,7 @@ export default {
   },
   methods:{
     Login(){
-      LoginData = axios.post('http://gbi.sytes.net:3000/login',{username: this.username,password: this.password})
+      LoginData = axios.post('http://dks.it.maranatha.edu:3000/login',{username: this.username,password: this.password})
       this.onLoad = true
       LoginData
       .then(Response => {if(Response.data.message == 'success'){
