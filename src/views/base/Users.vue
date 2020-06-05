@@ -67,7 +67,10 @@ const someData = () => (async function(){
         text: stringify[i]["nama_mitra"]
       });
     }
-      
+      for(const obj of temp) {
+      delete obj.nama;
+      }
+
       for(const obj of temp) {
       obj.Nomor = obj.UserID;
       delete obj.UserID;
@@ -97,6 +100,8 @@ const someData = () => (async function(){
       obj.Mitra = obj.mitra_id_mitra;
       delete obj.mitra_id_mitra;
       }
+
+      
     return temp
     })
 
