@@ -13,21 +13,29 @@
               ></b-form-input>
               </b-form-group>
 
-              <b-form-group label="Kategori" label-for="dropdown-form-kategori" >
+              <!-- <b-form-group label="Kategori" label-for="dropdown-form-kategori" >
                 <b-form-input v-model="kategori"
                   id="dropdown-form-kategori"
                   size="sm"
                   placeholder="Kategori"
                 ></b-form-input>
-              </b-form-group>
+              </b-form-group> -->
 
-              <b-form-group label="Jenis" label-for="dropdown-form-jenis" >
+              <b-form-group v-show="!updateSubmit" validated label="Kategori" label-for="dropdown-form-Kategori">
+              <b-form-select v-model="kategori" :options="optionskategori" required></b-form-select>
+            </b-form-group>
+
+            <b-form-group v-show="!updateSubmit" validated label="Jenis" label-for="dropdown-form-Jenis">
+              <b-form-select v-model="jenis" :options="optionsjenis" required></b-form-select>
+            </b-form-group>
+
+              <!-- <b-form-group label="Jenis" label-for="dropdown-form-jenis" >
                 <b-form-input v-model="jenis"
                   id="dropdown-form-jenis"
                   size="sm"
                   placeholder="Jenis"
                 ></b-form-input>
-              </b-form-group>
+              </b-form-group> -->
 
                 <b-form-group label="Email" label-for="dropdown-form-email" >
                 <b-form-input v-model="email"
@@ -195,6 +203,10 @@ const someData = () => (async function(){
       obj.Nama_Negara = obj.nama_negara;
       delete obj.nama_negara;
       }
+
+      for(const obj of temp) {
+      delete obj.created_at;
+      }
     return temp
     })
 
@@ -215,6 +227,16 @@ export default {
       kota:null,
       cId:null,
       cDeleted:null,
+      optionskategori:[
+        {text:'Institusi Pendidikan Dalam Negeri',value:'1'},
+        {text:'Institusi Non-Pendidikan Dalam Negeri',value:'2'},
+        {text:'Institusi Pendidikan Dalam Luar Negeri',value:'3'},
+        {text:'Institusi Non-Pendidikan Dalam Luar Negeri',value:'4'}
+      ],
+      optionsjenis:[
+        {text:'Internal',value:'1'},
+        {text:'Eksternal',value:'2'},
+      ],
       updateSubmit:false,
       items: someData,
       itemsArray: someData(),
@@ -250,7 +272,7 @@ export default {
       //}
     },
       onClickForm:function(onClickedForm){
-      alert(JSON.stringify(onClickedForm))
+      // alert(JSON.stringify(onClickedForm))
       cId = JSON.stringify(onClickedForm['Nomor_Mitra']).replace(/"/g, '')
       var cName = JSON.stringify(onClickedForm['Nama_Mitra']).replace(/"/g, '')
       var cKategori = JSON.stringify(onClickedForm['Kategori_Mitra']).replace(/"/g, '')

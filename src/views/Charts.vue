@@ -50,7 +50,7 @@ methods: {
 },async mounted () {
     try { 
       token = localStorage.getItem('tokena')
-      var Getmitra  = await axios.post('http://gbi.sytes.net:3000/mitra',{token: token, _method: "GET"}).catch(error => console.log('Ada Error') )
+      var Getmitra  = await axios.post('http://dks.it.maranatha.edu:3000/mitra',{token: token, _method: "GET"}).catch(error => console.log('Ada Error') )
       var temp = []
       Object.values(Getmitra.data.values).forEach((entry) => {
         temp.push(entry)

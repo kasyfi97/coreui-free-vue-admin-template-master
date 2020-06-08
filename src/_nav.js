@@ -34,6 +34,11 @@ export default {
       icon: 'icon-puzzle'
     },
     {
+      name: 'DokumenDetail',
+      url: '/base/tabledokumendetail',
+      icon: 'icon-puzzle'
+    },
+    {
       name: 'Users',
       url: '/base/Users',
       icon: 'icon-puzzle'

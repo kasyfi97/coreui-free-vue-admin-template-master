@@ -101,7 +101,15 @@ const someData = () => (async function(){
       delete obj.mitra_id_mitra;
       }
 
-      
+      for(const obj of temp) {
+      obj.Nama_Mitra = obj.nama_mitra;
+      delete obj.nama_mitra;
+      }
+
+      for(const obj of temp) {
+      obj.Last_login = obj.last_login;
+      delete obj.last_login;
+      }
     return temp
     })
 

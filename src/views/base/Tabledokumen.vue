@@ -12,7 +12,7 @@
           enctype="multipart/form-data"
           @submit.stop.prevent
         >
-        <form-wizard>
+        <form-wizard title="Tambah / Edit Dokumen" subtitle='Step-Step Yang Dibtuhkan' finish-button-text="Tekan Tombol Update/Add">
           <tab-content title="Step Pertama">
            <b-form-group label="Tahun" label-for="dropdown-form-Tahun">
               <b-form-input
@@ -65,6 +65,7 @@
                 id="dropdown-form-manfaat"
                 size="sm"
                 placeholder="Manfaat Dokumen"
+                required
               ></b-form-input>
             </b-form-group>
 
@@ -143,9 +144,18 @@
               id="checkbox-4"
               v-model="renew"
               name="checkbox-4"
-              value="Yes"
-              unchecked-value="No"
+              value="1"
+              unchecked-value="0"
             >Auto Renew</b-form-checkbox>
+
+            <b-form-checkbox
+              id="checkbox-5"
+              v-model="hapus"
+              name="checkbox-5"
+              value=1
+              unchecked-value=0
+            >Delete</b-form-checkbox>
+
 
             <b-form-file accept=".pdf" v-model="file" class="mt-3" plain></b-form-file>
 
@@ -157,6 +167,16 @@
               @click="onClickUpdate"
             >Update</b-button>
           </tab-content>
+          <!-- <template slot="footer" slot-scope="props">
+       <div class="wizard-footer-left">
+           <wizard-button v-if="props.activeTabIndex > 0 && !props.isLastStep" @click.native="props.prevTab()" :style="props.fillButtonStyle">Previous</wizard-button>
+        </div>
+        <div class="wizard-footer-right">
+          <wizard-button v-if="!props.isLastStep" @click.native="props.nextTab()" class="wizard-footer-right" :style="props.fillButtonStyle">Next</wizard-button>
+
+          <wizard-button v-else class="wizard-footer-right finish-button" :style="props.fillButtonStyle">{{props.isLastStep ? 'Done' : 'Next'}}</wizard-button>
+        </div>
+      </template> -->
         </form-wizard>
           <b-dropdown-form enctype="multipart/form-data" @submit.stop.prevent>          
 
@@ -267,6 +287,7 @@ const someData = () =>
       delete obj.autorenew;
       delete obj.jenis_dokumen_id;
       delete obj.evaluation;
+      delete obj.created_at;
     }
 
     temp2 = temp.map(mitra => {
@@ -274,50 +295,6 @@ const someData = () =>
       mitra.mitra_2 = mitra.mitras[1].nama_mitra;
       mitra.mitras = mitra.mitras.length;
       return mitra;
-    });
-
-    for(const obj of temp) {
-      delete obj.mitras;
-    }
-    var q = new Date();
-    var m = q.getMonth();
-    var d = q.getDay();
-    var y = q.getFullYear();
-
-    var date = new Date(y,m,d);
-
-    var mydate=new Date('2020-06-30');
-    console.log(date);
-    console.log(mydate)
-
-    if(mydate>date)
-    {
-        console.log("abis");
-    }
-    else
-    {
-        console.log("ada");
-    }
-    var result = [];
-
-    // read all items of data.
-    temp.forEach(function(item) {
-    var DateTemp
-     // read all keys of item.
-    Object.keys(item).forEach(function(key) {
-        result.push(item[key]);
-    });
-    var DateTemp = new Date(item.Tanggal_Akhir)
-    if(date>DateTemp)
-    {
-        expired = expired +1
-    }
-    else
-    {
-        warning = warning +1
-    }
-    console.log(expired)
-    console.log(warning)
     });
     
     return temp2;
@@ -372,6 +349,7 @@ export default {
     },
     mitras() {
       this.options = temp2mitra;
+      return this.options
     }
   },
   name: "tablesd",
@@ -392,9 +370,10 @@ export default {
       refDokumen: "",
       peserta: "",
       Alasan: "",
-      warningTime: "",
+      warningTime: 60,
       file: "",
-      renew: false,
+      renew: 0,
+      hapus:0,
       updateSubmit: false,
       clicked: true,
       items: someData,
@@ -424,7 +403,6 @@ export default {
       formData.append("warningtime", this.warningTime);
       formData.append("reason", this.Alasan);
       formData.append("autorenew", this.renew);
-
       var KirimData = axios.post("http://dks.it.maranatha.edu:3000/dokumen",formData
           // {
           //   token,
@@ -447,7 +425,7 @@ export default {
         location.reload();
     },
     onClickForm: function(onClickedForm) {
-      //alert(JSON.stringify(onClickedForm))
+      // alert(JSON.stringify(onClickedForm))
       cTahun = JSON.stringify(onClickedForm["Tahun"]).replace(/"/g, "");
       cJudul = JSON.stringify(onClickedForm["Judul_Dokumen"]).replace(
         /"/g,
@@ -554,11 +532,13 @@ export default {
           formData.append("tgl_akhir", this.valueTanggalAkhir);
           formData.append("manfaat_dokumen", this.manfaat);
           formData.append("dokumen_ref", this.refDokumen);
+          formData.append("is_deleted", this.hapus);
+          formData.append("autorenew", this.renew);
           formData.append("file", this.file);
         var updateData = axios.post("http://dks.it.maranatha.edu:3000/dokumen/"+cTahun, formData).catch(error => this.$router.push({ path: "/pages/500" }));
         this.updateSubmit = false;
         console.log("masuk ke updte berhasil");
-        location.reload();     
+        // location.reload();     
     },
     onDownload() {
       console.log(token)
@@ -575,10 +555,10 @@ export default {
             link.click();
           }).catch(error => this.$router.push({ path: "/pages/500" }));
       // window.open(downloadDokumen);
-    },created () {
-      //anytime the vue instance is created, call the fillData() function.
-      this.onClickrender()
     }
+  },
+  mounted: function (){
+    this.onClickrender()
   }
 };
 </script>

@@ -1,25 +1,26 @@
 <template>
   <AppHeaderDropdown right no-caret>
     <template slot="header">
-      <img
-        src="img/avatars/6.jpg"
-        class="img-avatar"
-        alt="admin@bootstrapmaster.com" />
+      <img src="img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" />
     </template>\
     <template slot="dropdown">
-      <b-dropdown-header tag="div" class="text-center"><strong>Dokumen</strong></b-dropdown-header>
-      <b-dropdown-item><i class="fa fa-tasks" /> Expired
+      <b-dropdown-header tag="div" class="text-center">
+        <strong>Dokumen</strong>
+      </b-dropdown-header>
+      <b-dropdown-item>
+        <i class="fa fa-tasks" /> Expired
         <b-badge variant="danger">{{ itemsCount }}</b-badge>
       </b-dropdown-item>
-      <b-dropdown-item><i class="fa fa-comments" /> Warning
+      <b-dropdown-item>
+        <i class="fa fa-comments" /> Warning
         <b-badge variant="warning">{{ itemsCount2 }}</b-badge>
       </b-dropdown-item>
-      <b-dropdown-header
-        tag="div"
-        class="text-center">
+      <b-dropdown-header tag="div" class="text-center">
         <strong>Akun</strong>
       </b-dropdown-header>
-      <b-dropdown-item @click="Logout"><i class="fa fa-lock" />Logout</b-dropdown-item>
+      <b-dropdown-item @click="Logout">
+        <i class="fa fa-lock" />Logout
+      </b-dropdown-item>
     </template>
   </AppHeaderDropdown>
 </template>
@@ -30,30 +31,31 @@ let token;
 let Getmitra;
 var temp2mitra;
 var cTahun;
-var cJudul
-var mitrasSend
-let TanggalCount
-let expired =0
-let warning =0
-var gExpired = localStorage.getItem('expired')
-var gWarning = localStorage.getItem('warning')
+var cJudul;
+var mitrasSend;
+let TanggalCount;
+let expired = 0;
+let warning = 0;
+var gExpired = localStorage.getItem("expired");
+var gWarning = localStorage.getItem("warning");
 
-import { HeaderDropdown as AppHeaderDropdown } from '@coreui/vue'
+import { HeaderDropdown as AppHeaderDropdown } from "@coreui/vue";
 export default {
-  name: 'DefaultHeaderDropdownAccnt',
+  name: "DefaultHeaderDropdownAccnt",
   components: {
     AppHeaderDropdown
   },
   data: () => {
-    return { itemsCount:gExpired,itemsCount2:gWarning,}
+    return { itemsCount: gExpired, itemsCount2: gWarning };
   },
-  methods:{
-    Logout(){
-      localStorage.setItem('tokena',null)
-      this.$router.push({path: '/pages/login'})
-      console.log(localStorage.getItem('tokena'))
+  methods: {
+    Logout() {
+      localStorage.setItem("tokena", null);
+      this.$router.push({ path: "/pages/login" });
+      console.log(localStorage.getItem("tokena"));
     }
-  },async mounted(){
+  },
+  async mounted() {
     let value;
     let key;
     token = localStorage.getItem("tokena");
@@ -65,9 +67,12 @@ export default {
       .catch(error => console.log("Ada Error dengan Dokumen")); //.then(Response => this.mitra = Response.data);
 
     Getmitra = await axios
-      .post("http://dks.it.maranatha.edu:3000/mitra", { token: token, _method: "GET" })
+      .post("http://dks.it.maranatha.edu:3000/mitra", {
+        token: token,
+        _method: "GET"
+      })
       .catch(error => console.log("Ada Error dengan Mitra")); //.then(Response => this.mitra = Response.data);
-    
+
     var tempmitra = [];
     temp2mitra = [];
     Object.values(Getmitra.data.values).forEach(entry => {
@@ -90,7 +95,7 @@ export default {
     var temp2 = [];
     temp = [...dokumen.data.values];
 
-    for(const obj of temp) {
+    for (const obj of temp) {
       obj.Tahun = obj.id;
       obj.No_Dokumen = obj.no_dokumen;
       obj.Judul_Dokumen = obj.judul_dokumen;
@@ -126,15 +131,15 @@ export default {
       delete obj.jenis_dokumen_id;
       delete obj.evaluation;
     }
-    
-      temp2 = temp.map(mitra => {
+
+    temp2 = temp.map(mitra => {
       mitra.mitra_1 = mitra.mitras[0].nama_mitra;
       mitra.mitra_2 = mitra.mitras[1].nama_mitra;
       mitra.mitras = mitra.mitras.length;
       return mitra;
     });
 
-    for(const obj of temp) {
+    for (const obj of temp) {
       delete obj.mitras;
     }
     var q = new Date();
@@ -142,42 +147,47 @@ export default {
     var d = q.getDay();
     var y = q.getFullYear();
 
-    var date = new Date(y,m,d);
+    var date = new Date(y, m, d);
 
-    var mydate=new Date('2020-06-30');
+    var mydate = new Date("2020-06-30");
     console.log(date);
-    console.log(mydate)
+    console.log(mydate);
 
-    if(mydate>date)
-    {
-        console.log("abis");
-    }
-    else
-    {
-        console.log("ada");
+    if (mydate > date) {
+      console.log("abis");
+    } else {
+      console.log("ada");
     }
     var result = [];
 
     temp.forEach(function(item) {
-    var DateTemp
-     // read all keys of item.
-    Object.keys(item).forEach(function(key) {
+      var tempWarning = item.Waktu_Peringatan;
+      if (tempWarning == null) {
+        tempWarning = 60;
+      }
+      // read all keys of item.
+      Object.keys(item).forEach(function(key) {
         result.push(item[key]);
+      });
+      var DateTemp = new Date(item.Tanggal_Akhir);
+      var TimeWarning = new Date(DateTemp);
+      var TimeWarning = TimeWarning.setDate(
+        TimeWarning.getDate() - tempWarning
+      );
+      if (item.Dihapus != "1") {
+        if (date > DateTemp) {
+          // ini yg tgl akhir
+          expired = expired + 1;
+        } else if (date >= TimeWarning) {
+          // ini tgl akhir - warning time
+          warning = warning + 1;
+        }
+        console.log(expired);
+        console.log(warning);
+      }
     });
-    var DateTemp = new Date(item.Tanggal_Akhir)
-    if(date>DateTemp)
-    {
-        expired = expired +1
-    }
-    else
-    {
-        warning = warning +1
-    }
-    console.log(expired)
-    console.log(warning)
-    })
-    localStorage.setItem('expired',expired)
-    localStorage.setItem('warning',warning)
+    localStorage.setItem("expired", expired);
+    localStorage.setItem("warning", warning);
   }
-}
+};
 </script>

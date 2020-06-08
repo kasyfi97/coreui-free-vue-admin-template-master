@@ -21,6 +21,7 @@ const Tables = () => import('@/views/base/Tables')
 const Tablesp = () => import('@/views/base/Tablepic')
 const Tablesd = () => import('@/views/base/Tabledokumen')
 const TablesU = () => import('@/views/base/Users')
+const Tablesdetail = () => import('@/views/base/TabledokumenDetail')
 const Tabs = () => import('@/views/base/Tabs')
 const Breadcrumbs = () => import('@/views/base/Breadcrumbs')
 const Carousels = () => import('@/views/base/Carousels')
@@ -147,6 +148,11 @@ function configRoutes() {
               path: 'tabledokumen',
               name: 'Tabledokumen',
               component: Tablesd
+            },
+            {
+              path: 'tabledokumenDetail',
+              name: 'TabledokumenDetail',
+              component: Tablesdetail
             },
             {
               path: 'tabs',
