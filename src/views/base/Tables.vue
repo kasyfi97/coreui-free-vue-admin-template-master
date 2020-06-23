@@ -21,11 +21,11 @@
                 ></b-form-input>
               </b-form-group> -->
 
-              <b-form-group v-show="!updateSubmit" validated label="Kategori" label-for="dropdown-form-Kategori">
+              <b-form-group  validated label="Kategori" label-for="dropdown-form-Kategori">
               <b-form-select v-model="kategori" :options="optionskategori" required></b-form-select>
             </b-form-group>
 
-            <b-form-group v-show="!updateSubmit" validated label="Jenis" label-for="dropdown-form-Jenis">
+            <b-form-group  validated label="Jenis" label-for="dropdown-form-Jenis">
               <b-form-select v-model="jenis" :options="optionsjenis" required></b-form-select>
             </b-form-group>
 
@@ -44,13 +44,9 @@
                   placeholder="email@example.com"
                 ></b-form-input>
               </b-form-group>
-
-              <b-form-group label="Negara" label-for="dropdown-form-negara" >
-                <b-form-input v-model="negara"
-                  id="dropdown-form-negara"
-                  size="sm"
-                  placeholder="Id Negara"
-                ></b-form-input>
+              
+              <b-form-group  validated label="Negara" label-for="dropdown-form-Jenis">
+                <b-form-select v-model="negara" :options="optionsnegara" required></b-form-select>
               </b-form-group>
 
               <b-form-group label="Provinsi" label-for="dropdown-form-provinsi" >
@@ -109,8 +105,12 @@ let Getmitra
 let token
 let cId
 let cDeleted
-//isDeleted
-//affliateId
+var temp2mitra;
+var tempnegara2;
+var Getnegara
+var cTahun;
+var cJudul
+var negarasend
 
 const someData = () => (async function(){
     token = localStorage.getItem('tokena')
@@ -120,6 +120,28 @@ const someData = () => (async function(){
     Object.values(Getmitra.data.values).forEach((entry) => {
       temp.push(entry)
     })
+
+    Getnegara = await axios
+      .post("http://dks.it.maranatha.edu:3000/negara", { token: token, _method: "GET" })
+      .catch(error => console.log("Ada Error dengan Mitra")); //.then(Response => this.mitra = Response.data);
+    
+    var tempnegara = [];
+    tempnegara2 = [];
+    Object.values(Getnegara.data.values).forEach(entry => {
+      tempnegara.push(entry);
+    });
+    console.log(tempnegara);
+
+    var bebas = [];
+    var obj = tempnegara;
+    var stringify = JSON.parse(JSON.stringify(obj));
+
+    for (var i = 0; i < stringify.length; i++) {
+      tempnegara2.push({
+        value: stringify[i]["id_negara"],
+        text: stringify[i]["nama"]
+      });
+    }
     // var obj = JSON.stringify(temp)
     // console.log(obj)
     // var stringify = JSON.parse(obj);
@@ -135,7 +157,7 @@ const someData = () => (async function(){
       console.log(temp2)
 
       for(const obj of temp) {
-      obj.Nomor_Mitra = obj.id_mitra;
+      obj.Nomor = obj.id_mitra;
       delete obj.id_mitra;
       }
 
@@ -227,6 +249,7 @@ export default {
       kota:null,
       cId:null,
       cDeleted:null,
+      optionsnegara:[],
       optionskategori:[
         {text:'Institusi Pendidikan Dalam Negeri',value:'1'},
         {text:'Institusi Non-Pendidikan Dalam Negeri',value:'2'},
@@ -272,8 +295,8 @@ export default {
       //}
     },
       onClickForm:function(onClickedForm){
-      // alert(JSON.stringify(onClickedForm))
-      cId = JSON.stringify(onClickedForm['Nomor_Mitra']).replace(/"/g, '')
+      //alert(JSON.stringify(onClickedForm))
+      cId = JSON.stringify(onClickedForm['Nomor']).replace(/"/g, '')
       var cName = JSON.stringify(onClickedForm['Nama_Mitra']).replace(/"/g, '')
       var cKategori = JSON.stringify(onClickedForm['Kategori_Mitra']).replace(/"/g, '')
       var cJenis = JSON.stringify(onClickedForm['Jenis_Mitra']).replace(/"/g, '')
@@ -305,11 +328,15 @@ export default {
       this.provinsi = ''
       this.kodepos = ''
       this.kota = ''
+      this.optionsnegara = tempnegara2
       this.updateSubmit = false
     },onDelete(){
       var KirimData = axios.post('http://dks.it.maranatha.edu:3000/mitra',{token,affiliateId:cId,_method: "delete"})
       location.reload();
       }
+  },
+  mounted: function (){
+    this.onClickrender()
   }
 }
 </script>

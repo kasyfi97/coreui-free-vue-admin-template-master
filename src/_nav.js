@@ -19,11 +19,6 @@ export default {
       }
     },
     {
-      name: 'PIC',
-      url: '/base/tablepic',
-      icon: 'icon-puzzle'
-    },
-    {
       name: 'Mitra',
       url: '/base/tables',
       icon: 'icon-puzzle'

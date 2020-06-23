@@ -18,7 +18,6 @@ const Cards = () => import('@/views/base/Cards')
 const Forms = () => import('@/views/base/Forms')
 const Switches = () => import('@/views/base/Switches')
 const Tables = () => import('@/views/base/Tables')
-const Tablesp = () => import('@/views/base/Tablepic')
 const Tablesd = () => import('@/views/base/Tabledokumen')
 const TablesU = () => import('@/views/base/Users')
 const Tablesdetail = () => import('@/views/base/TabledokumenDetail')
@@ -133,11 +132,6 @@ function configRoutes() {
               path: 'tables',
               name: 'Tables',
               component: Tables
-            },
-            {
-              path: 'tablepic',
-              name: 'Tablepic',
-              component: Tablesp           
             },
             {
               path: 'users',

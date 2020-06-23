@@ -13,33 +13,22 @@
           @submit.stop.prevent
         >
         <b-dropdown-form>
-            <b-form-group label="Dokumen ID" label-for="dropdown-form-name" @submit.stop.prevent>
-              <b-form-input v-model="dokumenid"
-                id="dropdown-form-name"
-                size="sm"
-                placeholder="Dokumen ID"
-              ></b-form-input>
+          <b-form-group validated label="Dokumen ID" label-for="dropdown-form-Dokumen ID">
+                <b-form-select v-model="dokumenid" :options="optiondokumen" required></b-form-select>
               </b-form-group>
 
               <b-form-group validated label="Mitra 1" label-for="dropdown-form-mitra1">
                 <b-form-select v-model="mitra1" :options="options" required></b-form-select>
               </b-form-group>
 
-            <b-form-group label="Role Mitra" label-for="dropdown-form-name" @submit.stop.prevent>
-              <b-form-input v-model="rolemitra"
+            <b-form-group validated label="Role Mitra" label-for="dropdown-form-name" @submit.stop.prevent>
+              <b-form-input v-model="rolemitra" 
                 id="dropdown-form-name"
                 size="sm"
                 placeholder="Role Mitra"
+                required
               ></b-form-input>
               </b-form-group>
-
-              <!-- <b-form-group label="Jenis" label-for="dropdown-form-jenis" >
-                <b-form-input v-model="jenis"
-                  id="dropdown-form-jenis"
-                  size="sm"
-                  placeholder="Jenis"
-                ></b-form-input>
-              </b-form-group> -->
 
                 <b-form-group label="No Dokumen Mitra" label-for="dropdown-form-email" >
                 <b-form-input v-model="nodokumenmitra"
@@ -49,11 +38,35 @@
                 ></b-form-input>
               </b-form-group>
 
-              <b-form-group label="PIC ID" label-for="dropdown-form-negara" >
-                <b-form-input v-model="picid"
-                  id="dropdown-form-negara"
+              <b-form-group label="Nama Lengkap" label-for="dropdown-form-nama" >
+                <b-form-input v-model="nama"
+                  id="dropdown-form-nama"
                   size="sm"
-                  placeholder="ID PIC"
+                  placeholder="Nama Lengkap"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-form-group label="Email" label-for="dropdown-form-email" >
+                <b-form-input v-model="email"
+                  id="dropdown-form-email"
+                  size="sm"
+                  placeholder="email"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-form-group label="Telp" label-for="dropdown-form-tel" >
+                <b-form-input v-model="telp"
+                  id="dropdown-form-nama"
+                  size="sm"
+                  placeholder="081xxxxx"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-form-group label="Alamat" label-for="dropdown-form-Alamat" >
+                <b-form-input v-model="alamat"
+                  id="dropdown-form-Alamat"
+                  size="sm"
+                  placeholder="Alamat"
                 ></b-form-input>
               </b-form-group>
 
@@ -84,6 +97,7 @@ import {FormWizard, TabContent} from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 const FileSaver = require('file-saver');
 let dokumen;
+let dokumen1;
 let token;
 let Getmitra;
 var temp2mitra;
@@ -92,6 +106,9 @@ var cMitraID
 var mitrasSend
 let expired = 0
 let warning = 0
+let doku
+let dokumen2;
+let cnodokumen;
 
 const someData = () =>
   async function() {
@@ -108,7 +125,30 @@ const someData = () =>
     Getmitra = await axios
       .post("http://dks.it.maranatha.edu:3000/mitra", { token: token, _method: "GET" })
       .catch(error => console.log("Ada Error dengan Mitra")); //.then(Response => this.mitra = Response.data);
+
+    dokumen1 = await axios
+      .post("http://dks.it.maranatha.edu:3000/dokumen", { token: token, _method: "GET" })
+      .catch(error => console.log("Ada Error dengan Mitra")); //.then(Response => this.mitra = Response.data);
     
+    var tempdokumen = [];
+    dokumen2 = [];
+    Object.values(dokumen1.data.values).forEach(entry => {
+      tempdokumen.push(entry);
+    });
+    console.log(tempdokumen);
+
+    var bebas = [];
+    var obj = tempdokumen;
+    var stringify = JSON.parse(JSON.stringify(obj));
+
+    for (var i = 0; i < stringify.length; i++) {
+      dokumen2.push({
+        value: stringify[i]["id"],
+        text: stringify[i]["no_dokumen"]
+      });
+    }
+    
+    console.log(dokumen2)
     var tempmitra = [];
     temp2mitra = [];
     Object.values(Getmitra.data.values).forEach(entry => {
@@ -192,12 +232,16 @@ export default {
   TabContent },
   data: () => {
     return {
-      dokumenid: "",
-      rolemitra: "",
-      selected: "",
-      nodokumenmitra: "",
-      mitra1: "",
-      picid: null,
+      dokumenid: null,
+      rolemitra: null,
+      selected: null,
+      alamat:null,
+      telp:null,
+      nama:null,
+      email:null,
+      optiondokumen:[],
+      nodokumenmitra: null,
+      mitra1: null,
       options: [],
       updateSubmit: false,
       clicked: true,
@@ -213,7 +257,7 @@ export default {
       }
       mitrasSend = [];
       mitrasSend.push(this.mitra1);
-      var KirimData = axios.post("http://dks.it.maranatha.edu:3000/detail",{token:token,dokumen_id:this.dokumenid,mitra_id_mitra:mitrasSend,role_mitra:this.rolemitra,no_dokumen_mitra:this.nodokumenmitra,pic_id:this.picid}
+      var KirimData = axios.post("http://dks.it.maranatha.edu:3000/detail",{token:token,dokumen_id:this.dokumenid,mitra_id_mitra:mitrasSend,role_mitra:this.rolemitra,no_dokumen_mitra:this.nodokumenmitra,fullName:this.nama,email:this.email,tel:this.telp,address:this.alamat}
           // {
           //   token,
           //   tahun:this.tahun,
@@ -235,7 +279,8 @@ export default {
         location.reload();
     },
     onClickForm: function(onClickedForm) {
-      // alert(JSON.stringify(onClickedForm))
+      alert(JSON.stringify(onClickedForm))
+      cnodokumen = JSON.stringify(onClickedForm["no_dokumen"]).replace(/"/g, "");
       cDokumenid = JSON.stringify(onClickedForm["dokumen_id"]).replace(/"/g, "");
       cMitraID = JSON.stringify(onClickedForm["mitra_id_mitra"]).replace(
         /"/g,
@@ -245,21 +290,32 @@ export default {
         /"/g,
         ""
       );
-      var cPicID = JSON.stringify(
-        onClickedForm["pic_id"]
-      ).replace(/"/g, "");
-
 
       var cNamaMitra = JSON.stringify(onClickedForm["nama_mitra"]).replace(
         /"/g,
         ""
       );
       
-      var cNamaPIC = JSON.stringify(onClickedForm["nama_pic"]).replace(
+      var cRoleMitra = JSON.stringify(onClickedForm["role_mitra"]).replace(
         /"/g,
         ""
       );
-      var cRoleMitra = JSON.stringify(onClickedForm["role_mitra"]).replace(
+      var cNama = JSON.stringify(onClickedForm["nama_lengkap"]).replace(
+        /"/g,
+        ""
+      );
+      
+      var cEmail = JSON.stringify(onClickedForm["email"]).replace(
+        /"/g,
+        ""
+      );
+
+      var cNomor = JSON.stringify(onClickedForm["nomor_telepon"]).replace(
+        /"/g,
+        ""
+      );
+
+      var cAlamat = JSON.stringify(onClickedForm["alamat"]).replace(
         /"/g,
         ""
       );
@@ -268,30 +324,34 @@ export default {
       this.mitra1 = cMitraID;
       this.rolemitra = cRoleMitra;
       this.nodokumenmitra = cNoDokumenMitra;
-      this.picid = cPicID;
+      this.nama = cNama
+      this.email = cEmail
+      this.telp = cNomor
+      this.alamat = cAlamat
 
       //alert(cEmail)
       this.updateSubmit = true;
     },
     onClickrender() {
       this.options = temp2mitra;
-      this.tahun = "";
-      this.noDokumen = "";
-      this.judul = "";
-      this.selected = "";
-      this.manfaat = "";
-      this.valueTanggalMulai = "";
-      this.valueTanggalAkhir = "";
-      this.refDokumen = "";
-      this.mitra1 = "";
-      this.mitra2 = "";
-      this.file = "";
+      this.optiondokumen = dokumen2;
+      this.tahun = null;
+      this.noDokumen = null;
+      this.judul = null;
+      this.selected = null;
+      this.manfaat = null;
+      this.valueTanggalMulai = null;
+      this.valueTanggalAkhir = null;
+      this.refDokumen = null;
+      this.mitra1 = null;
+      this.mitra2 = null;
+      this.file = null;
       this.updateSubmit = false;
     },
     onClickUpdate() {
         mitrasSend = [];
         mitrasSend.push(this.mitra1)
-        var updateData = axios.post("http://dks.it.maranatha.edu:3000/detail",{_method:"PUT",token:token,role_mitra:this.rolemitra,no_dokumen_mitra:this.nodokumenmitra,pic_id:this.picid,dokumen_id:this.dokumenid,mitra_id_mitra:7}).catch(error => this.$router.push({ path: "/pages/500" }));
+        var updateData = axios.put("http://dks.it.maranatha.edu:3000/detail",{token:token,dokumen_id:this.dokumenid,mitra_id_mitra:mitrasSend,role_mitra:this.rolemitra,no_dokumen_mitra:this.nodokumenmitra,fullName:this.nama,email:this.email,tel:this.telp,address:this.alamat});
         this.updateSubmit = false;
         console.log("masuk ke updte berhasil");
         // location.reload();     

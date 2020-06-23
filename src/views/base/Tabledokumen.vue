@@ -167,16 +167,16 @@
               @click="onClickUpdate"
             >Update</b-button>
           </tab-content>
-          <!-- <template slot="footer" slot-scope="props">
-       <div class="wizard-footer-left">
+          <template slot="footer" slot-scope="props">
+       <!-- <div class="wizard-footer-left">
            <wizard-button v-if="props.activeTabIndex > 0 && !props.isLastStep" @click.native="props.prevTab()" :style="props.fillButtonStyle">Previous</wizard-button>
-        </div>
+        </div> -->
         <div class="wizard-footer-right">
           <wizard-button v-if="!props.isLastStep" @click.native="props.nextTab()" class="wizard-footer-right" :style="props.fillButtonStyle">Next</wizard-button>
 
           <wizard-button v-else class="wizard-footer-right finish-button" :style="props.fillButtonStyle">{{props.isLastStep ? 'Done' : 'Next'}}</wizard-button>
         </div>
-      </template> -->
+      </template>
         </form-wizard>
           <b-dropdown-form enctype="multipart/form-data" @submit.stop.prevent>          
 
@@ -186,13 +186,25 @@
           <b-spinner v-show="!clicked" small></b-spinner>Download Dokumen
         </b-button>
         <b-button @click="onClickrender" variant="primary">Refresh Form</b-button>
+        <!-- <b-form-group label-for="Search">
+              <b-form-input
+                id="Search-Input"
+                v-model="keyword"
+                type="text"
+                placeholder="Search"
+                required
+              ></b-form-input>
+            </b-form-group> -->
         <c-table
           v-on:row-clicked="onClickForm($event)"
           :table-data="items"
+          :keyword="keyword"      
+          responsive="sm"
           fixed
           bordered
           caption="<i class='fa fa-align-justify'></i> Table Dokumen"
-        ></c-table>
+        >     
+        </c-table>
       </b-col>
     </b-row>
   </div>
@@ -213,6 +225,8 @@ var cJudul
 var mitrasSend
 let expired = 0
 let warning = 0
+var bool1;
+var bool2;
 
 const someData = () =>
   async function() {
@@ -293,68 +307,42 @@ const someData = () =>
     temp2 = temp.map(mitra => {
       mitra.mitra_1 = mitra.mitras[0].nama_mitra;
       mitra.mitra_2 = mitra.mitras[1].nama_mitra;
-      mitra.mitras = mitra.mitras.length;
       return mitra;
     });
-    
+
+    for(const obj of temp) {
+      delete obj.mitras;
+    }
     return temp2;
   };
 
 export default {
   computed: {
-    noDokumenState() {
-      var bool;
-      if (this.noDokumen != null) {
-        bool = true;
+    requiredstate1() {
+      if (this.noDokumen != null && this.judul != null ) {
+        bool1 = true;
       } else {
-        bool = false;
+        bool1 = false;
       }
-      return bool;
+      return bool1;
     },
-    judulState() {
-      var bool;
-      if (this.judul != null) {
-        bool = true;
+    requiredstate2() {
+      if (this.valueTanggalMulai != null && this.valueTanggalAkhir != null) {
+        bool2 = true;
       } else {
-        bool = false;
+        bool2 = false;
       }
-      return bool;
+      return bool2;
     },
-    mulaiState() {
-      var bool;
-      if (this.valueTanggalMulai != null) {
-        bool = true;
-      } else {
-        bool = false;
-      }
-      return bool;
-    },
-    akhirState() {
-      var bool;
-      if (this.valueTanggalAkhir != null) {
-        bool = true;
-      } else {
-        bool = false;
-      }
-      return bool;
-    },
-    mitra1State() {
-      var bool;
-      if (this.mitra1 != null) {
-        bool = true;
-      } else {
-        bool = false;
-      }
-      return bool;
-    },
-    mitras() {
-      this.options = temp2mitra;
-      return this.options
-    }
+    // filtered () {
+		// 	return this.keyword
+		// 		? this.items.filter(item => item.Tahun.includes(this.keyword) || item.No_Dokumen.includes(this.keyword) || item.Judul_Dokumen.includes(this.keyword))
+		// 		: this.items
+		// }
   },
   name: "tablesd",
   components: { cTable,FormWizard,
-  TabContent },
+  TabContent},
   data: () => {
     return {
       tahun: "",
@@ -376,8 +364,17 @@ export default {
       hapus:0,
       updateSubmit: false,
       clicked: true,
+      keyword: '',
+      // sortBy: 'Tahun',
+      // sortDesc: false,
+      // fields: [
+			// 	{key: 'Tahun', label: 'Tahun', sortable: true},
+			// 	{key: 'Judul_Dokumen', label: 'Judul Dokumen', sortable: true},
+			// 	{key: 'No_Dokumen', label: 'No Dokumen', sortable: true}
+			// ],
       items: someData,
-      itemsArray: someData()
+      itemsArray: someData(),
+      
     };
   },
   methods: {
