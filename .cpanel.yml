@@ -1,5 +1,4 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/dks/public_html
-    - cp -R dist/ $DEPLOYPATH
+    - cp -R dist /home/dks/public_html
