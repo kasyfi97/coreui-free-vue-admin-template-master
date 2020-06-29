@@ -1,4 +1,4 @@
 ---
 deployment:
   tasks:
-    - cp -R dist /home/dks/public_html
+    - mv dist /home/dks/public_html
