@@ -1,4 +1,6 @@
 ---
 deployment:
   tasks:
-    - cp -R dist /home/dks/public_html
+    - export DEPLOYPATH=/home/dks/public_html/
+    - cd dist
+    - /bin/cp -R ./ $DEPLOYPATH
